@@ -9,6 +9,11 @@ import Projects from './sections/Projects';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { theme } from './styles/theme';
 
+/**
+ * Main App Component
+ * Renders the complete portfolio website with all sections
+ * including Hero, About, Projects, Contact, and Footer
+ */
 function App() {
   return (
     <ThemeProvider theme={theme}>
