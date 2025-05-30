@@ -89,6 +89,7 @@ const skillCategories = [
     icon: <FaPython />,
     skills: [
       { name: 'Python', level: 85 },
+      { name: 'React.js', level: 80 },
       { name: 'HTML', level: 80 },
       { name: 'CSS', level: 75 },
     ],
