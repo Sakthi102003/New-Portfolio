@@ -229,7 +229,7 @@ const Resume = () => {
 
               <h3>Technical Skills</h3>
               <ul>
-                <li><strong>Programming:</strong> Python, HTML, CSS</li>
+                <li><strong>Programming:</strong> Python, React.js, HTML, CSS</li>
                 <li><strong>Tools:</strong> Microsoft Office, Git/GitHub, Dockers</li>
                 <li><strong>Operating Systems:</strong> Ubuntu, Kali Linux, CentOS</li>
                 <li><strong>Networking:</strong> FTP, DHCP, NFS</li>
