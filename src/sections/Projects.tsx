@@ -145,12 +145,12 @@ const projects = [
     demoLink: 'https://github.com/Sakthi102003/Phishing-Website-Detector',
   },
   {
-    title: 'AES Data Encryption',
-    description: 'Implementation of AES encryption and decryption using Python. Features secure key management, file encryption, and support for different AES modes of operation.',
-    image: '🔒',
-    techStack: ['Python', 'AES', 'Cryptography'],
-    githubLink: 'https://github.com/Sakthi102003/AES-Encryption-Using-Python',
-    demoLink: 'https://github.com/Sakthi102003/AES-Encryption',
+    title: 'Reposcope',
+    description: 'A powerful web application that provides deep insights into GitHub profiles, helping users understand their coding journey and potential areas for improvement. Features include account value estimation, repository overview, tech stack analysis, activity timeline, and AI-powered recommendations.',
+    image: '🚀',
+    techStack: ['React', 'TypeScript', 'Tailwind CSS', 'GitHub API'],
+    githubLink: 'https://github.com/Sakthi102003/Reposcope',
+    demoLink: 'https://reposcope-2003.web.app',
   },
 ];
 
