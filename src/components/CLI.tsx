@@ -108,7 +108,7 @@ const OutputLine = styled.div<{ $isCommand?: boolean }>`
 export const CLI: React.FC<CLIProps> = ({ isOpen, onClose }) => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<Array<{ type: 'command' | 'output', content: string }>>([
-    { type: 'output', content: 'Welcome to SakthiCLI! Type "help" for available commands.' }
+    { type: 'output', content: 'Welcome to my Security & Development Portfolio CLI! Type "help" for available commands.' }
   ]);
 
   const commands: Record<string, () => string> = {

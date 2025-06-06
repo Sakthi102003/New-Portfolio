@@ -1,14 +1,14 @@
-# Sakthi's Cybersecurity Portfolio
+# Sakthi's Portfolio
 
-A modern, interactive portfolio showcasing my cybersecurity projects and skills, built with React.js and TypeScript. Features a unique CLI interface for a tech-savvy browsing experience.
+A modern, interactive portfolio showcasing my expertise in both cybersecurity and full-stack development. Built with React.js and TypeScript, featuring a unique CLI interface that bridges security and development.
 
 🌐 **Live Demo:** [sakthi-s-portfolio.web.app](https://sakthi-s-portfolio.web.app/)
 
 ## Features
 
 - 💻 Interactive CLI interface (Press Ctrl + ` to access)
-- 🎨 Dark theme with cybersecurity aesthetic
-- 🔒 Focus on security projects and skills
+- 🔒 Security-focused projects & implementations
+- 🚀 Full-stack development expertise
 - ✨ Smooth animations using Framer Motion
 - 📱 Fully responsive design
 - 🌐 Social media and GitHub integration
