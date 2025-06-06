@@ -1,14 +1,17 @@
+import { lazy, Suspense } from 'react';
 import { ThemeProvider } from 'styled-components';
-import FloatingNav from './components/FloatingNav';
 import Footer from './components/Footer';
+import Navbar from './components/Navbar';
 import ScrollProgress from './components/ScrollProgress';
-import About from './sections/About';
-import Contact from './sections/Contact';
 import Hero from './sections/Hero';
-import Projects from './sections/Projects';
-import Skills from './sections/Skills';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { theme } from './styles/theme';
+
+// Lazy load heavy components
+const About = lazy(() => import('./sections/About'));
+const Skills = lazy(() => import('./sections/Skills'));
+const Projects = lazy(() => import('./sections/Projects'));
+const Contact = lazy(() => import('./sections/Contact'));
 
 /**
  * Main App Component
@@ -20,12 +23,16 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <ScrollProgress />
-      <FloatingNav />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
+      <Navbar />
+      <main>
+        <Hero />
+        <Suspense fallback={<div />}>
+          <About />
+          <Skills />
+          <Projects />
+          <Contact />
+        </Suspense>
+      </main>
       <Footer />
     </ThemeProvider>
   );
