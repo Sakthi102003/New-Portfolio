@@ -137,20 +137,20 @@ const projects = [
     demoLink: 'https://sakthi102003.pythonanywhere.com/',
   },
   {
-    title: 'Phishing Website Detector Using ML (In Process)',
-    description: 'Currently developing an ML-based tool that analyzes and detects potential phishing websites. The project involves implementing machine learning algorithms for URL analysis and content verification to identify suspicious patterns and protect users from phishing attempts.',
-    image: '🛡️',
-    techStack: ['Python', 'Machine Learning', 'Web Security'],
-    githubLink: 'https://github.com/Sakthi102003/Phishing-Website-Detector',
-    demoLink: 'https://github.com/Sakthi102003/Phishing-Website-Detector',
-  },
-  {
     title: 'Reposcope',
     description: 'A powerful web application that provides deep insights into GitHub profiles, helping users understand their coding journey and potential areas for improvement. Features include account value estimation, repository overview, tech stack analysis, activity timeline, and AI-powered recommendations.',
     image: '🚀',
     techStack: ['React', 'TypeScript', 'Tailwind CSS', 'GitHub API'],
     githubLink: 'https://github.com/Sakthi102003/Reposcope',
     demoLink: 'https://reposcope-2003.web.app',
+  },
+  {
+    title: 'PhishShield',
+    description: 'An advanced anti-phishing solution that combines machine learning and real-time threat detection to protect users from phishing attacks. Features include URL analysis, email scanning, and browser extension integration.',
+    image: '🛡️',
+    techStack: ['React', 'TypeScript', 'Machine Learning', 'Node.js', 'Security APIs'],
+    githubLink: 'https://github.com/Sakthi102003/PhisShield',
+    demoLink: 'https://phisshield.onrender.com/'
   },
 ];
 
@@ -253,4 +253,4 @@ const Projects = () => {
   );
 };
 
-export default Projects; 
+export default Projects;
