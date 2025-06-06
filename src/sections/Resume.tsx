@@ -47,7 +47,7 @@ const DownloadButton = styled(motion.a)`
   box-shadow: ${({ theme }) => theme.shadows.glow};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.secondary};
+    opacity: 0.8;
   }
 `;
 
@@ -56,16 +56,16 @@ const PreviewButton = styled(motion.button)`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing.xl}`};
-  background: ${({ theme }) => theme.colors.secondary};
-  color: ${({ theme }) => theme.colors.background};
-  border: none;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.primary};
+  border: 2px solid ${({ theme }) => theme.colors.primary};
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
   box-shadow: ${({ theme }) => theme.shadows.glow};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => `${theme.colors.primary}20`};
   }
 `;
 
@@ -142,7 +142,7 @@ const CloseButton = styled.button`
   transition: color ${({ theme }) => theme.transitions.default};
 
   &:hover {
-    color: ${({ theme }) => theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -266,13 +266,13 @@ const Resume = () => {
               <h3>Projects</h3>
               <ul>
                 <li>
-                  <strong>Password Generator:</strong> Created a Python-based password generator supporting all character types
+                  <strong>GitHub Profile Analyzer:</strong> Developed a tool that analyzes GitHub profiles for security insights and coding patterns using Python and GitHub API
                 </li>
                 <li>
-                  <strong>Keylogger:</strong> Developed a basic keylogger in Python for demonstration purposes
+                  <strong>Phishing Website Detector:</strong> Created a machine learning model to identify potential phishing websites with high accuracy
                 </li>
                 <li>
-                  <strong>AES Data Encryption:</strong> Implemented AES encryption and decryption of data using Python
+                  <strong>Steganography Tool:</strong> Built a secure information hiding tool using advanced steganography techniques and image processing
                 </li>
               </ul>
 

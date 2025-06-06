@@ -1,18 +1,16 @@
 import { motion } from 'framer-motion';
 import {
-  FaCode,
-  FaGithub,
-  FaInstagram,
-  FaLinkedin,
-  FaMedium,
-  FaShieldAlt
+    FaCode,
+    FaGithub,
+    FaLinkedin,
+    FaMedium,
+    FaShieldAlt
 } from 'react-icons/fa';
 import styled from 'styled-components';
 
 const FooterContainer = styled.footer`
   background: ${({ theme }) => theme.colors.background};
   padding: ${({ theme }) => theme.spacing.xl};
-  border-top: 1px solid ${({ theme }) => theme.colors.primary}40;
 `;
 
 const Content = styled.div`
@@ -49,6 +47,11 @@ const Copyright = styled.p`
 
 const socialLinks = [
   {
+    icon: <FaShieldAlt />,
+    url: 'https://tryhackme.com/p/cyberX2003',
+    label: 'TryHackMe',
+  },
+  {
     icon: <FaGithub />,
     url: 'https://github.com/Sakthi102003',
     label: 'GitHub',
@@ -59,19 +62,9 @@ const socialLinks = [
     label: 'LinkedIn',
   },
   {
-    icon: <FaInstagram />,
-    url: 'https://www.instagram.com/sakthimurugans._/profilecard/?igsh=MXR0bDFpazBiamVrYQ==',
-    label: 'Instagram',
-  },
-  {
     icon: <FaMedium />,
     url: 'https://medium.com/@sakthimurugan102003',
     label: 'Medium',
-  },
-  {
-    icon: <FaShieldAlt />,
-    url: 'https://tryhackme.com/p/cyberX2003',
-    label: 'TryHackMe',
   },
   {
     icon: <FaCode />,

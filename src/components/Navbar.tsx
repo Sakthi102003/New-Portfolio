@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import styled from 'styled-components';
+import { useScrollSpy } from '../hooks/useScrollSpy';
 
 const Nav = styled.nav`
   position: fixed;
@@ -40,18 +41,25 @@ const NavLinks = styled(motion.div)`
   }
 `;
 
-const NavLink = styled(motion.a)`
-  color: ${({ theme }) => theme.colors.text.primary};
+const NavLink = styled(motion.a)<{ $active?: boolean }>`
+  color: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.text.primary)};
   text-decoration: none;
   font-size: 1rem;
   position: relative;
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
 
   &::after {
     content: '';
     position: absolute;
     bottom: -5px;
     left: 0;
-    width: 0;
+    width: ${({ $active }) => ($active ? '100%' : '0')};
     height: 2px;
     background: ${({ theme }) => theme.colors.primary};
     transition: width ${({ theme }) => theme.transitions.default};
@@ -96,16 +104,32 @@ const MobileMenu = styled(motion.div)`
 `;
 
 const navLinks = [
+  { href: '#hero', text: 'Home' },
   { href: '#about', text: 'About' },
-  { href: '#projects', text: 'Projects' },
   { href: '#skills', text: 'Skills' },
-  { href: '#resume', text: 'Resume' },
+  { href: '#projects', text: 'Projects' },
   { href: '#contact', text: 'Contact' },
 ];
+
+const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  e.preventDefault();
+  const element = document.querySelector(href);
+  if (element) {
+    const offset = 80; // Height of fixed navbar
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth',
+    });
+  }
+};
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const activeSection = useScrollSpy(navLinks.map(link => link.href.slice(1)));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -128,22 +152,18 @@ const Navbar = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          CYBER<span style={{ color: '#fff' }}>PORTFOLIO</span>
+          <span style={{ marginRight: '0.5rem' }}>SAKTHI'S</span><span style={{ color: '#fff' }}>PORTFOLIO</span>
         </Logo>
 
-        <NavLinks
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          {navLinks.map((link) => (
+        <NavLinks>
+          {navLinks.map(({ href, text }) => (
             <NavLink
-              key={link.href}
-              href={link.href}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              key={href}
+              href={href}
+              $active={activeSection === href.slice(1)}
+              onClick={(e) => scrollToSection(e, href)}
             >
-              {link.text}
+              {text}
             </NavLink>
           ))}
         </NavLinks>
@@ -151,30 +171,36 @@ const Navbar = () => {
         <MobileMenuButton
           onClick={() => setIsOpen(!isOpen)}
           whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
+          aria-controls="mobile-menu"
         >
-          {isOpen ? <FaTimes /> : <FaBars />}
+          {isOpen ? <FaTimes aria-hidden="true" /> : <FaBars aria-hidden="true" />}
         </MobileMenuButton>
       </NavContainer>
 
       <AnimatePresence>
         {isOpen && (
           <MobileMenu
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.3 }}
+            id="mobile-menu"
+            role="navigation"
+            aria-label="Mobile navigation"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
           >
-            {navLinks.map((link) => (
+            {navLinks.map(({ href, text }) => (
               <NavLink
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                style={{ fontSize: '1.5rem' }}
+                key={href}
+                href={href}
+                $active={activeSection === href.slice(1)}
+                onClick={(e) => {
+                  scrollToSection(e, href);
+                  setIsOpen(false);
+                }}
               >
-                {link.text}
+                {text}
               </NavLink>
             ))}
           </MobileMenu>
@@ -184,4 +210,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;

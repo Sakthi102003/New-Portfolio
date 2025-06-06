@@ -1,11 +1,16 @@
 import emailjs from '@emailjs/browser';
-import { motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
-import { FaEnvelope, FaPaperPlane, FaUser } from 'react-icons/fa';
-import Particles from 'react-tsparticles';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import {
+    FaEnvelope,
+    FaGithub,
+    FaInstagram,
+    FaLinkedin,
+    FaMedium,
+    FaPaperPlane,
+    FaUser
+} from 'react-icons/fa';
 import styled from 'styled-components';
-import { loadFull } from 'tsparticles';
-import type { Engine } from 'tsparticles-engine';
 
 // Initialize EmailJS with error handling
 try {
@@ -51,16 +56,24 @@ const Form = styled(motion.form)`
 
 const FormGroup = styled(motion.div)`
   position: relative;
+  margin-bottom: ${({ theme }) => theme.spacing.md};
 `;
 
-const Input = styled.input`
+const ErrorMessage = styled(motion.span)`
+  color: ${({ theme }) => theme.colors.error};
+  font-size: 0.9rem;
+  margin-top: ${({ theme }) => theme.spacing.xs};
+  display: block;
+`;
+
+const Input = styled.input<{ $hasError?: boolean }>`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.md};
   background: ${({ theme }) => theme.colors.background};
-  border: 2px solid ${({ theme }) => theme.colors.primary}40;
+  border: 1px solid ${({ theme, $hasError }) => 
+    $hasError ? theme.colors.error : `${theme.colors.primary}40`};
   border-radius: 4px;
   color: ${({ theme }) => theme.colors.text.primary};
-  font-size: 1rem;
   transition: all ${({ theme }) => theme.transitions.default};
 
   &:focus {
@@ -70,14 +83,14 @@ const Input = styled.input`
   }
 `;
 
-const TextArea = styled.textarea`
+const Textarea = styled.textarea<{ $hasError?: boolean }>`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.md};
   background: ${({ theme }) => theme.colors.background};
-  border: 2px solid ${({ theme }) => theme.colors.primary}40;
+  border: 1px solid ${({ theme, $hasError }) => 
+    $hasError ? theme.colors.error : `${theme.colors.primary}40`};
   border-radius: 4px;
   color: ${({ theme }) => theme.colors.text.primary};
-  font-size: 1rem;
   min-height: 150px;
   resize: vertical;
   transition: all ${({ theme }) => theme.transitions.default};
@@ -103,8 +116,8 @@ const Label = styled.label`
 
   ${Input}:focus ~ &,
   ${Input}:not(:placeholder-shown) ~ &,
-  ${TextArea}:focus ~ &,
-  ${TextArea}:not(:placeholder-shown) ~ & {
+  ${Textarea}:focus ~ &,
+  ${Textarea}:not(:placeholder-shown) ~ & {
     top: 0;
     transform: translateY(-100%);
     font-size: 0.8rem;
@@ -156,280 +169,303 @@ const Alert = styled(motion.div)<{ $type: 'success' | 'error' }>`
       $type === 'success' ? theme.colors.success : theme.colors.error};
 `;
 
-const particlesConfig = {
-  particles: {
-    number: {
-      value: 30,
-      density: {
-        enable: true,
-        value_area: 800,
-      },
-    },
-    color: {
-      value: '#00ff00',
-    },
-    shape: {
-      type: 'circle',
-    },
-    opacity: {
-      value: 0.3,
-      random: true,
-    },
-    size: {
-      value: 2,
-      random: true,
-    },
-    move: {
-      enable: true,
-      speed: 1,
-      direction: 'none' as const,
-      random: true,
-      straight: false,
-      outModes: {
-        default: 'out' as const,
-      },
-    },
-    links: {
-      enable: true,
-      distance: 150,
-      color: '#00ff00',
-      opacity: 0.2,
-      width: 1,
-    },
+const SocialGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: ${({ theme }) => theme.spacing.lg};
+  margin: ${({ theme }) => theme.spacing.xl} 0;
+`;
+
+const SocialCard = styled(motion.a)`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.lg};
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.primary}20;
+  border-radius: 8px;
+  text-decoration: none;
+  color: ${({ theme }) => theme.colors.text.primary};
+  transition: all ${({ theme }) => theme.transitions.default};
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: ${({ theme }) => theme.shadows.glow};
+  }
+
+  svg {
+    font-size: 2rem;
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const SocialInfo = styled.div`
+  h4 {
+    color: ${({ theme }) => theme.colors.primary};
+    margin-bottom: ${({ theme }) => theme.spacing.xs};
+  }
+
+  p {
+    color: ${({ theme }) => theme.colors.text.secondary};
+    font-size: 0.9rem;
+  }
+`;
+
+const socialLinks = [
+  {
+    icon: <FaGithub />,
+    name: 'GitHub',
+    username: '@Sakthi102003',
+    description: 'Check out my open source projects',
+    url: 'https://github.com/Sakthi102003'
   },
-  interactivity: {
-    events: {
-      onHover: {
-        enable: true,
-        mode: 'repulse',
-      },
-    },
-    modes: {
-      repulse: {
-        distance: 100,
-        duration: 0.4,
-      },
-    },
+  {
+    icon: <FaLinkedin />,
+    name: 'LinkedIn',
+    username: 'Sakthimurugan S',
+    description: 'Connect with me professionally',
+    url: 'https://linkedin.com/in/sakthimurugan-s'
   },
-  background: {
-    color: 'transparent',
+  {
+    icon: <FaMedium />,
+    name: 'Medium',
+    username: '@sakthimurugan102003',
+    description: 'Read my technical articles',
+    url: 'https://medium.com/@sakthimurugan102003'
   },
+  {
+    icon: <FaInstagram />,
+    name: 'Instagram',
+    username: '@sakthimurugans._',
+    description: 'Follow my cybersecurity journey',
+    url: 'https://www.instagram.com/sakthimurugans._'
+  }
+];
+
+interface FormState {
+  name: string;
+  email: string;
+  message: string;
+}
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
+const validateForm = (values: FormState): FormErrors => {
+  const errors: FormErrors = {};
+  
+  if (!values.name.trim()) {
+    errors.name = 'Name is required';
+  }
+  
+  if (!values.email) {
+    errors.email = 'Email is required';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+    errors.email = 'Invalid email address';
+  }
+  
+  if (!values.message.trim()) {
+    errors.message = 'Message is required';
+  } else if (values.message.length < 10) {
+    errors.message = 'Message must be at least 10 characters';
+  }
+  
+  return errors;
 };
 
-const Contact = () => {
+interface IContactProps {
+  // Add any props if needed
+}
+
+const Contact: React.FC<IContactProps> = () => {
   const formRef = useRef<HTMLFormElement>(null);
+  const [formState, setFormState] = useState<FormState>({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [alert, setAlert] = useState<{
-    type: 'success' | 'error';
-    message: string;
-  } | null>(null);
+  const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
-  const particlesInit = async (engine: Engine) => {
-    await loadFull(engine);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormState(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: undefined
+      }));
+    }
   };
-
-  // Verify environment variables on component mount
-  useEffect(() => {
-    const config = {
-      serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-      templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-      publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-    };
-    
-    // Log configuration (without sensitive data)
-    console.log('EmailJS Config Status:', {
-      hasServiceId: !!config.serviceId,
-      hasTemplateId: !!config.templateId,
-      hasPublicKey: !!config.publicKey
-    });
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const validationErrors = validateForm(formState);
+    
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     setIsSubmitting(true);
-    setAlert(null);
-
     try {
-      if (!formRef.current) {
-        throw new Error('Form reference is not available');
-      }
-
-      // Validate form data
-      const formData = new FormData(formRef.current);
-      const name = formData.get('user_name');
-      const email = formData.get('user_email');
-      const message = formData.get('message');
-
-      if (!name || !email || !message) {
-        throw new Error('Please fill in all fields');
-      }
-
-      // Send email
-      const result = await emailjs.sendForm(
+      await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        formRef.current,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        {
+          from_name: formState.name,
+          from_email: formState.email,
+          message: formState.message,
+        }
       );
-
-      if (result.status === 200) {
-        setAlert({
-          type: 'success',
-          message: 'Message sent successfully! I will get back to you soon.',
-        });
-        formRef.current.reset();
-      } else {
-        throw new Error('Failed to send message');
-      }
+      
+      setAlert({
+        type: 'success',
+        message: 'Thank you for your message! I will get back to you soon.'
+      });
+      setFormState({ name: '', email: '', message: '' });
     } catch (error) {
-      console.error('EmailJS Error:', error);
       setAlert({
         type: 'error',
-        message: error instanceof Error ? error.message : 'Failed to send message. Please try again later.',
+        message: 'Failed to send message. Please try again later.'
       });
     } finally {
       setIsSubmitting(false);
+      setTimeout(() => setAlert(null), 5000); // Clear alert after 5 seconds
     }
   };
 
   return (
     <ContactSection id="contact">
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={particlesConfig}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-        }}
-      />
       <Container>
         <SectionTitle
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ 
-            duration: 0.8,
-            type: "spring",
-            stiffness: 100
-          }}
+          transition={{ duration: 0.5 }}
         >
-          Contact
+          Get in Touch
         </SectionTitle>
 
-        {alert && (
-          <Alert
-            $type={alert.type}
-            initial={{ opacity: 0, y: -20, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.8 }}
-            transition={{ 
-              duration: 0.5,
-              type: "spring",
-              stiffness: 200
-            }}
-          >
-            {alert.message}
-          </Alert>
-        )}
+        <AnimatePresence>
+          {alert && (
+            <Alert
+              $type={alert.type}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              {alert.message}
+            </Alert>
+          )}
+        </AnimatePresence>
+
+        <SocialGrid>
+          {socialLinks.map((link) => (
+            <SocialCard
+              key={link.name}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {link.icon}
+              <SocialInfo>
+                <h4>{link.name}</h4>
+                <p>{link.username}</p>
+                <p>{link.description}</p>
+              </SocialInfo>
+            </SocialCard>
+          ))}
+        </SocialGrid>
 
         <Form
           ref={formRef}
           onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ 
-            duration: 0.8,
-            type: "spring",
-            stiffness: 100,
-            delay: 0.2
-          }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <FormGroup
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ 
-              duration: 0.6,
-              type: "spring",
-              stiffness: 100,
-              delay: 0.3
-            }}
-          >
+          <FormGroup>
             <Input
               type="text"
-              name="user_name"
+              name="name"
               placeholder=" "
+              value={formState.name}
+              onChange={handleChange}
               required
+              $hasError={!!errors.name}
             />
-            <Label>
-              <FaUser /> Name
-            </Label>
+            <Label><FaUser /> Name</Label>
+            {errors.name && (
+              <ErrorMessage
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                {errors.name}
+              </ErrorMessage>
+            )}
           </FormGroup>
 
-          <FormGroup
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ 
-              duration: 0.6,
-              type: "spring",
-              stiffness: 100,
-              delay: 0.4
-            }}
-          >
+          <FormGroup>
             <Input
               type="email"
-              name="user_email"
+              name="email"
               placeholder=" "
+              value={formState.email}
+              onChange={handleChange}
               required
+              $hasError={!!errors.email}
             />
-            <Label>
-              <FaEnvelope /> Email
-            </Label>
+            <Label><FaEnvelope /> Email</Label>
+            {errors.email && (
+              <ErrorMessage
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                {errors.email}
+              </ErrorMessage>
+            )}
           </FormGroup>
 
-          <FormGroup
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ 
-              duration: 0.6,
-              type: "spring",
-              stiffness: 100,
-              delay: 0.5
-            }}
-          >
-            <TextArea
+          <FormGroup>
+            <Textarea
               name="message"
               placeholder=" "
+              value={formState.message}
+              onChange={handleChange}
               required
+              $hasError={!!errors.message}
             />
-            <Label>Message</Label>
+            <Label><FaPaperPlane /> Message</Label>
+            {errors.message && (
+              <ErrorMessage
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                {errors.message}
+              </ErrorMessage>
+            )}
           </FormGroup>
 
           <SubmitButton
             type="submit"
             disabled={isSubmitting}
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 0 20px rgba(0, 255, 0, 0.5)"
-            }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              duration: 0.6,
-              type: "spring",
-              stiffness: 100,
-              delay: 0.6
-            }}
           >
-            <FaPaperPlane /> {isSubmitting ? 'Sending...' : 'Send Message'}
+            {isSubmitting ? 'Sending...' : 'Send Message'} <FaPaperPlane />
           </SubmitButton>
         </Form>
       </Container>
@@ -437,4 +473,4 @@ const Contact = () => {
   );
 };
 
-export default Contact; 
+export default Contact;
