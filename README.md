@@ -1,35 +1,57 @@
-# Cybersecurity Portfolio
+# Sakthi's Cybersecurity Portfolio
 
-A visually captivating, responsive, and animated cybersecurity-themed portfolio built with React.js, featuring modern web technologies and stunning visual effects.
+A modern, interactive portfolio showcasing my cybersecurity projects and skills, built with React.js and TypeScript. Features a unique CLI interface for a tech-savvy browsing experience.
 
 ## Features
 
+- 💻 Interactive CLI interface (Press Ctrl + ` to access)
 - 🎨 Dark theme with cybersecurity aesthetic
+- 🔒 Focus on security projects and skills
 - ✨ Smooth animations using Framer Motion
-- 🌟 Interactive particle backgrounds in Hero and Contact sections
 - 📱 Fully responsive design
-- 📧 Contact form with EmailJS integration and enhanced animations
-- 🔗 Social media and coding profile links in the footer
-- 📄 Downloadable resume button in the Hero section
-- 🎯 Project showcase with live demos
-- 🛠️ Skills visualization
+- 🌐 Social media and GitHub integration
+- 📄 Interactive project showcase
+- 🛠️ Comprehensive skills section
+- 🚀 Performance optimized
+
+## Featured Projects
+
+1. **File Integrity Checker**
+   - Python-based GUI tool for monitoring and verifying file integrity
+   - Features real-time monitoring and cryptographic hash verification
+   - Built with Python, Tkinter, and cryptography libraries
+
+2. **Reposcope**
+   - GitHub profile analyzer and visualization tool
+   - Provides insights into coding patterns and repository health
+   - Built with React.js and GitHub API
+
+3. **PhishShield**
+   - Machine learning-powered anti-phishing solution
+   - Features URL analysis and real-time threat detection
+   - Built with Python and ML frameworks
+
+4. **Steganography Tool**
+   - Image steganography implementation for secure data hiding
+   - Features multiple encoding algorithms
+   - Built with Python and image processing libraries
 
 ## Tech Stack
 
 - React.js with TypeScript
-- Vite for build tooling
-- Framer Motion for animations
-- Three.js for 3D graphics
-- TSParticles for background effects
-- Styled Components for styling
-- EmailJS for contact form
-- React Icons for iconography
+- Vite for fast development and building
+- Framer Motion for smooth animations
+- Styled Components for modern styling
+- React Icons for UI elements
+- Python for security tools
+- Machine Learning frameworks
+- Cryptography libraries
 
 ## Getting Started
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/cybersecurity-portfolio.git
+git clone https://github.com/Sakthi102003/cybersecurity-portfolio.git
 ```
 
 2. Install dependencies:
@@ -38,40 +60,48 @@ cd cybersecurity-portfolio
 npm install
 ```
 
-3. Create a `.env` file in the root directory and add your EmailJS credentials:
-```
-VITE_EMAILJS_SERVICE_ID=your_service_id
-VITE_EMAILJS_TEMPLATE_ID=your_template_id
-VITE_EMAILJS_PUBLIC_KEY=your_public_key
-```
-
-4. Start the development server:
+3. Start the development server:
 ```bash
 npm run dev
 ```
 
-5. Build for production:
+4. Build for production:
 ```bash
 npm run build
 ```
+
+## CLI Commands
+
+The portfolio features an interactive CLI that can be accessed by:
+- Clicking the terminal icon in the navigation bar
+- Using the keyboard shortcut `Ctrl + ```
+
+Available commands:
+- `help` - List all available commands
+- `about` - Learn about me and my background
+- `skills` - View my technical skills
+- `projects` - Browse my projects
+- `contact` - Get my contact information
+- `clear` - Clear the terminal
+- `exit` - Close the CLI
 
 ## Project Structure
 
 ```
 src/
-├── components/         # Reusable components
-├── sections/          # Page sections
-├── styles/           # Global styles and themes
-├── assets/           # Static assets
-├── hooks/            # Custom hooks
-├── utils/            # Utility functions
-└── types/            # TypeScript type definitions
+├── components/       # Reusable components including CLI
+├── sections/        # Main portfolio sections
+├── styles/         # Theme and global styles
+├── hooks/          # Custom React hooks
+└── types/          # TypeScript definitions
 ```
 
-## Contributing
+## Connect With Me
 
-Feel free to submit issues and enhancement requests!
+- 📧 Email: sakthimurugan102003@gmail.com
+- 💻 GitHub: [@Sakthi102003](https://github.com/Sakthi102003)
+- 🔗 LinkedIn: [sakthimurugan-s](https://linkedin.com/in/sakthimurugan-s)
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

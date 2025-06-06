@@ -1,5 +1,6 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { CLI } from './components/CLI';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import ScrollProgress from './components/ScrollProgress';
@@ -19,11 +20,25 @@ const Contact = lazy(() => import('./sections/Contact'));
  * including Hero, About, Projects, Contact, and Footer
  */
 function App() {
+  const [isCLIOpen, setIsCLIOpen] = useState(false);
+
+  // Add keyboard shortcut to toggle CLI
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === '`') {
+        setIsCLIOpen(prev => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <ScrollProgress />
-      <Navbar />
+      <Navbar onCLIToggle={() => setIsCLIOpen(prev => !prev)} />
       <main>
         <Hero />
         <Suspense fallback={<div />}>
@@ -34,6 +49,7 @@ function App() {
         </Suspense>
       </main>
       <Footer />
+      <CLI isOpen={isCLIOpen} onClose={() => setIsCLIOpen(false)} />
     </ThemeProvider>
   );
 }
