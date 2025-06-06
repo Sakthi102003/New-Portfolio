@@ -2,6 +2,8 @@
 
 A modern, interactive portfolio showcasing my cybersecurity projects and skills, built with React.js and TypeScript. Features a unique CLI interface for a tech-savvy browsing experience.
 
+🌐 **Live Demo:** [sakthi-s-portfolio.web.app](https://sakthi-s-portfolio.web.app/)
+
 ## Features
 
 - 💻 Interactive CLI interface (Press Ctrl + ` to access)
