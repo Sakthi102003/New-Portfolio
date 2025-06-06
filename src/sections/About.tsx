@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FaBriefcase, FaCloud, FaCode, FaShieldAlt } from 'react-icons/fa';
+import { FaBriefcase, FaCode, FaShieldAlt } from 'react-icons/fa';
 import styled from 'styled-components';
 
 const AboutSection = styled.section`
@@ -117,11 +117,6 @@ const About = () => {
       icon: <FaShieldAlt />,
       title: 'Information Security',
       description: 'Passionate about protecting digital assets and implementing robust security measures.',
-    },
-    {
-      icon: <FaCloud />,
-      title: 'Cloud Security',
-      description: 'Interested in securing cloud infrastructure and implementing best practices for cloud environments.',
     },
     {
       icon: <FaCode />,

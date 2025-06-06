@@ -367,7 +367,7 @@ const Hero = () => {
             <FaEnvelope /> Get in Touch
           </Button>
           <SecondaryButton
-            href="https://drive.google.com/file/d/1vcuqI3tt35dDf5j-KfpzRYbDLabroBiS/view?usp=drive_link"
+            href="https://drive.google.com/file/d/1Ea-Jh7ImCFsIQoBDQ3wSYrN5g4W2B4cv/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             initial={{ opacity: 0, y: 20 }}

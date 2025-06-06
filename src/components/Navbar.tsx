@@ -128,7 +128,13 @@ const CLIButton = styled(motion.button)`
   }
 `;
 
-const navLinks = [
+interface NavLink {
+  href: string;
+  text: string;
+  isExternal?: boolean;
+}
+
+const navLinks: NavLink[] = [
   { href: '#hero', text: 'Home' },
   { href: '#about', text: 'About' },
   { href: '#skills', text: 'Skills' },
@@ -136,7 +142,10 @@ const navLinks = [
   { href: '#contact', text: 'Contact' },
 ];
 
-const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string, isExternal?: boolean) => {
+  if (isExternal) {
+    return; // Let the default link behavior handle external URLs
+  }
   e.preventDefault();
   const element = document.querySelector(href);
   if (element) {
@@ -185,12 +194,14 @@ const Navbar = ({ onCLIToggle }: NavbarProps) => {
         </Logo>
 
         <NavLinks>
-          {navLinks.map(({ href, text }) => (
+          {navLinks.map(({ href, text, isExternal }) => (
             <NavLink
               key={href}
               href={href}
-              $active={activeSection === href.slice(1)}
-              onClick={(e) => scrollToSection(e, href)}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener noreferrer" : undefined}
+              $active={!isExternal && activeSection === href.slice(1)}
+              onClick={(e) => scrollToSection(e, href, isExternal)}
             >
               {text}
             </NavLink>
@@ -228,13 +239,15 @@ const Navbar = ({ onCLIToggle }: NavbarProps) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            {navLinks.map(({ href, text }) => (
+            {navLinks.map(({ href, text, isExternal }) => (
               <NavLink
                 key={href}
                 href={href}
-                $active={activeSection === href.slice(1)}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                $active={!isExternal && activeSection === href.slice(1)}
                 onClick={(e) => {
-                  scrollToSection(e, href);
+                  scrollToSection(e, href, isExternal);
                   setIsOpen(false);
                 }}
               >
