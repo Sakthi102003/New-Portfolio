@@ -124,10 +124,12 @@ export const CLI: React.FC<CLIProps> = ({ isOpen, onClose }) => {
       'I\'m a recent B.Sc. Computer Science graduate specializing in Cloud Technology and Information Security.\n' +
       'Passionate about cybersecurity and secure software development.',
     skills: () => 
-      'Technical Skills:\n' +
-      '• Programming: Python, React.js, TypeScript\n' +
-      '• Security: Network Security, Cryptography, Pen Testing\n' +
-      '• Tools: Git, Linux, VS Code\n' +
+      'Technical Skills:\n\n' +
+      '• Languages: Python, HTML, CSS, JavaScript\n' +
+      '• Frontend: React.js, Tailwind CSS, ShadCN UI, Chart.js\n' +
+      '• Backend/ML: Flask, GitHub API, Machine Learning (Python)\n' +
+      '• Tools: Git, GitHub, Firebase, VS Code\n' +
+      '• OS: Ubuntu, Kali Linux, CentOS\n\n' +
       'Type "projects" to see these skills in action!',
     projects: () => 
       'Recent Projects:\n' +

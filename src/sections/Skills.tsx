@@ -1,10 +1,25 @@
 import { motion } from 'framer-motion';
-import { FaGitAlt, FaLinux, FaNetworkWired, FaPython } from 'react-icons/fa';
+import {
+  FaCode,
+  FaFireAlt,
+  FaGitAlt, FaGithub,
+  FaHtml5,
+  FaJs,
+  FaLinux,
+  FaNetworkWired,
+  FaPython, FaReact, FaServer
+} from 'react-icons/fa';
+import { HiCommandLine } from 'react-icons/hi2';
+import { SiCentos, SiFlask, SiKalilinux, SiTailwindcss, SiUbuntu } from 'react-icons/si';
+import { TbBrandVscode } from 'react-icons/tb';
 import styled from 'styled-components';
 
 const SkillsSection = styled.section`
   padding: ${({ theme }) => theme.spacing.xl} 0;
   background: ${({ theme }) => theme.colors.background};
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
 `;
 
 const Container = styled.div`
@@ -15,110 +30,112 @@ const Container = styled.div`
 
 const SectionTitle = styled(motion.h2)`
   text-align: center;
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: ${({ theme }) => theme.spacing.xxl};
+  color: ${({ theme }) => theme.colors.text.primary};
   font-size: 2.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 `;
 
 const SkillsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: ${({ theme }) => theme.spacing.xl};
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: ${({ theme }) => theme.spacing.xl};
 `;
 
 const SkillCategory = styled(motion.div)`
-  background: ${({ theme }) => theme.colors.surface};
-  padding: ${({ theme }) => theme.spacing.xl};
-  border-radius: 8px;
-  box-shadow: ${({ theme }) => theme.shadows.card};
+  background: rgba(32, 32, 32, 0.95);
+  padding: ${({ theme }) => theme.spacing.lg};
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid ${({ theme }) => theme.colors.primary}20;
-`;
-
-const CategoryHeader = styled.div`
+  backdrop-filter: blur(10px);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.md};
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-  color: ${({ theme }) => theme.colors.primary};
+  justify-content: center;
+  text-align: center;
+  aspect-ratio: 1;
+  transition: all 0.3s ease;
 
-  svg {
-    font-size: 2rem;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: ${({ theme }) => theme.colors.primary};
   }
-
-  h3 {
-    font-size: 1.5rem;
-    margin: 0;
-  }
-`;
-
-const SkillList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
-const SkillItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const SkillName = styled.span`
-  color: ${({ theme }) => theme.colors.text.secondary};
+  color: ${({ theme }) => theme.colors.text.primary};
   font-size: 1rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+  margin-top: ${({ theme }) => theme.spacing.sm};
 `;
 
-const ProgressBar = styled.div`
-  width: 100%;
-  height: 8px;
-  background: ${({ theme }) => theme.colors.background};
-  border-radius: 4px;
-  overflow: hidden;
-`;
+const SkillIcon = styled.div`
+  font-size: 3rem;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: ${({ theme }) => theme.spacing.md};
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-const Progress = styled(motion.div)<{ $level: number }>`
-  width: ${({ $level }) => $level}%;
-  height: 100%;
-  background: ${({ theme }) => theme.colors.primary};
-  border-radius: 4px;
+  ${SkillCategory}:hover & {
+    transform: scale(1.1);
+    color: ${({ theme }) => theme.colors.text.primary};
+  }
 `;
 
 const skillCategories = [
   {
-    title: 'Programming',
-    icon: <FaPython />,
+    title: 'Languages',
+    icon: <FaCode />,
     skills: [
-      { name: 'Python', level: 85 },
-      { name: 'React.js', level: 80 },
-      { name: 'HTML', level: 80 },
-      { name: 'CSS', level: 75 },
+      { name: 'Python', icon: <FaPython /> },
+      { name: 'JavaScript', icon: <FaJs /> },
+      { name: 'HTML/CSS', icon: <FaHtml5 /> },
     ],
   },
   {
-    title: 'Tools',
+    title: 'Frontend',
+    icon: <FaReact />,
+    skills: [
+      { name: 'React.js', icon: <FaReact /> },
+      { name: 'TailwindCSS', icon: <SiTailwindcss /> },
+      { name: 'ShadCN UI', icon: <HiCommandLine /> },
+    ],
+  },
+  {
+    title: 'Backend & ML',
+    icon: <FaServer />,
+    skills: [
+      { name: 'Flask', icon: <SiFlask /> },
+      { name: 'GitHub API', icon: <FaGithub /> },
+      { name: 'ML/AI', icon: <FaNetworkWired /> },
+    ],
+  },
+  {
+    title: 'Tools & Platforms',
     icon: <FaGitAlt />,
     skills: [
-      { name: 'Microsoft Office', level: 90 },
-      { name: 'Git/GitHub', level: 85 },
-      { name: 'Dockers', level: 70 },
+      { name: 'Git/GitHub', icon: <FaGithub /> },
+      { name: 'Firebase', icon: <FaFireAlt /> },
+      { name: 'VS Code', icon: <TbBrandVscode /> },
     ],
   },
   {
     title: 'Operating Systems',
     icon: <FaLinux />,
     skills: [
-      { name: 'Ubuntu', level: 85 },
-      { name: 'Kali Linux', level: 80 },
-      { name: 'CentOS', level: 75 },
-    ],
-  },
-  {
-    title: 'Networking',
-    icon: <FaNetworkWired />,
-    skills: [
-      { name: 'FTP', level: 85 },
-      { name: 'DHCP', level: 80 },
-      { name: 'NFS', level: 75 },
+      { name: 'Ubuntu', icon: <SiUbuntu /> },
+      { name: 'Kali Linux', icon: <SiKalilinux /> },
+      { name: 'CentOS', icon: <SiCentos /> },
     ],
   },
 ];
@@ -136,40 +153,26 @@ const Skills = () => {
           Skills
         </SectionTitle>
         <SkillsGrid>
-          {skillCategories.map((category, index) => (
-            <SkillCategory
-              key={category.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <CategoryHeader>
-                {category.icon}
-                <h3>{category.title}</h3>
-              </CategoryHeader>
-              <SkillList>
-                {category.skills.map((skill) => (
-                  <SkillItem key={skill.name}>
-                    <SkillName>{skill.name}</SkillName>
-                    <ProgressBar>
-                      <Progress
-                        $level={skill.level}
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.2 }}
-                      />
-                    </ProgressBar>
-                  </SkillItem>
-                ))}
-              </SkillList>
-            </SkillCategory>
-          ))}
+          {skillCategories.flatMap(category => 
+            category.skills.map((skill, index) => (
+              <SkillCategory
+                key={skill.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <SkillIcon>
+                  {skill.icon}
+                </SkillIcon>
+                <SkillName>{skill.name}</SkillName>
+              </SkillCategory>
+            ))
+          )}
         </SkillsGrid>
       </Container>
     </SkillsSection>
   );
 };
 
-export default Skills; 
+export default Skills;
