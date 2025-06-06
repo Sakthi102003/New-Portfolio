@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTerminal, FaTimes } from 'react-icons/fa';
 import styled from 'styled-components';
 import { useScrollSpy } from '../hooks/useScrollSpy';
 
@@ -32,9 +32,10 @@ const Logo = styled(motion.div)`
   letter-spacing: 2px;
 `;
 
-const NavLinks = styled(motion.div)`
+const NavLinks = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: ${({ theme }) => theme.spacing.xl};
+  align-items: center;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: none;
@@ -103,6 +104,30 @@ const MobileMenu = styled(motion.div)`
   }
 `;
 
+const CLIButton = styled(motion.button)`
+  color: ${({ theme }) => theme.colors.primary};
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: ${({ theme }) => theme.spacing.sm};
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.xs};
+  margin-left: ${({ theme }) => theme.spacing.md};
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  span {
+    font-size: 0.8rem;
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      display: none;
+    }
+  }
+`;
+
 const navLinks = [
   { href: '#hero', text: 'Home' },
   { href: '#about', text: 'About' },
@@ -126,7 +151,11 @@ const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) =
   }
 };
 
-const Navbar = () => {
+interface NavbarProps {
+  onCLIToggle: () => void;
+}
+
+const Navbar = ({ onCLIToggle }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const activeSection = useScrollSpy(navLinks.map(link => link.href.slice(1)));
@@ -166,6 +195,15 @@ const Navbar = () => {
               {text}
             </NavLink>
           ))}
+          <CLIButton
+            onClick={onCLIToggle}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            title="Open CLI (Ctrl + `)"
+          >
+            <FaTerminal />
+            <span>(Ctrl + `)</span>
+          </CLIButton>
         </NavLinks>
 
         <MobileMenuButton

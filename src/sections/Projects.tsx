@@ -152,6 +152,15 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: "File Integrity Checker",
+    description: "A Python-based GUI tool for monitoring and verifying file integrity using cryptographic hashing. Features real-time monitoring, multiple hash algorithms (MD5, SHA-256), and alerts for unauthorized modifications.",
+    category: "Information Security",
+    techStack: ["Python", "Tkinter", "Cryptography", "File System"],
+    githubLink: "https://github.com/Sakthi102003/File-Integrity-Checker",
+    image: "/projects/network-monitor.svg",
+    iconType: "shield"
+  },
+  {
     title: "Stegnogrpahy",
     description: "A Python-based steganography tool that allows you to hide messages within images. It supports both LSB and PVD steganography techniques.",
     category: "Information Security",
