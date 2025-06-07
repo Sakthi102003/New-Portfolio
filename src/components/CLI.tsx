@@ -13,10 +13,10 @@ const CLIContainer = styled(motion.div)`
   right: 2rem;
   width: 600px;
   max-width: calc(100vw - 2rem);
-  background: ${({ theme }) => `${theme.colors.background}F5`};
-  border: 1px solid ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.primary}40;
   border-radius: 8px;
-  padding: 1rem;
+  overflow: hidden;
   font-family: ${({ theme }) => theme.fonts.secondary};
   box-shadow: ${({ theme }) => theme.shadows.glow};
   backdrop-filter: blur(10px);
@@ -33,32 +33,58 @@ const CLIHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.primary}40;
+  padding: 0.75rem 1rem;
+  background: ${({ theme }) => theme.colors.surface};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.primary}20;
 `;
 
-const CLITitle = styled.div`
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: bold;
+const CLIControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
-const CLIClose = styled.button`
-  color: ${({ theme }) => theme.colors.primary};
-  background: none;
-  border: none;
+const CLIButton = styled.div`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
   cursor: pointer;
-  padding: 0.25rem;
-  
+  transition: opacity 0.2s ease;
+
   &:hover {
     opacity: 0.8;
   }
 `;
 
+const CLIClose = styled(CLIButton)`
+  background: ${({ theme }) => theme.colors.cyber.danger};
+`;
+
+const CLIMinimize = styled(CLIButton)`
+  background: ${({ theme }) => theme.colors.cyber.warning};
+`;
+
+const CLIMaximize = styled(CLIButton)`
+  background: ${({ theme }) => theme.colors.cyber.success};
+`;
+
+const CLITitle = styled.div`
+  color: ${({ theme }) => theme.colors.text.secondary};
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:before {
+    content: '$';
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
 const CLIContent = styled.div`
+  padding: 1rem;
   height: 300px;
   overflow-y: auto;
-  margin-bottom: 1rem;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -69,8 +95,12 @@ const CLIContent = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.primary}40;
+    background: ${({ theme }) => theme.colors.primary}20;
     border-radius: 3px;
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.primary}40;
+    }
   }
 `;
 
@@ -108,7 +138,7 @@ const OutputLine = styled.div<{ $isCommand?: boolean }>`
 export const CLI: React.FC<CLIProps> = ({ isOpen, onClose }) => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<Array<{ type: 'command' | 'output', content: string }>>([
-    { type: 'output', content: 'Welcome to my Security & Development Portfolio CLI! Type "help" for available commands.' }
+    { type: 'output', content: 'Welcome to SakthiCLI v1.0\nType "help" to see available commands.' },
   ]);
 
   const commands: Record<string, () => string> = {
@@ -143,8 +173,8 @@ export const CLI: React.FC<CLIProps> = ({ isOpen, onClose }) => {
       '• GitHub: @Sakthi102003\n' +
       '• LinkedIn: sakthimurugan-s',
     clear: () => {
-      setHistory([]);
-      return '';
+      setTimeout(() => setHistory([]), 0);
+      return 'Clearing terminal...';
     },
     exit: () => {
       onClose();
@@ -185,29 +215,34 @@ export const CLI: React.FC<CLIProps> = ({ isOpen, onClose }) => {
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2 }}
         >
-      <CLIHeader>
-        <CLITitle>SakthiCLI v1.0</CLITitle>
-        <CLIClose onClick={onClose}>×</CLIClose>
-      </CLIHeader>
-      <CLIContent>
-        {history.map((entry, i) => (
-          <OutputLine key={i} $isCommand={entry.type === 'command'}>
-            {entry.content}
-          </OutputLine>
-        ))}
-      </CLIContent>
-      <form onSubmit={handleSubmit}>
-        <CLIInput>
-          <Prompt>$</Prompt>
-          <Input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            autoFocus
-          />
-        </CLIInput>
-      </form>
-    </CLIContainer>
+          <CLIHeader>
+            <CLIControls>
+              <CLIClose onClick={onClose} title="Close" />
+              <CLIMinimize title="Minimize" />
+              <CLIMaximize title="Maximize" />
+            </CLIControls>
+            <CLITitle>~/cybersecurity-portfolio</CLITitle>
+          </CLIHeader>
+          <CLIContent>
+            {history.map((entry, i) => (
+              <OutputLine key={i} $isCommand={entry.type === 'command'}>
+                {entry.content}
+              </OutputLine>
+            ))}
+          </CLIContent>
+          <form onSubmit={handleSubmit}>
+            <CLIInput>
+              <Prompt>$</Prompt>
+              <Input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                autoFocus
+                placeholder="Type a command..."
+              />
+            </CLIInput>
+          </form>
+        </CLIContainer>
       )}
     </AnimatePresence>
   );

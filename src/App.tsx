@@ -2,11 +2,12 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { CLI } from './components/CLI';
 import Footer from './components/Footer';
+import MusicPlayer from './components/Music';
 import Navbar from './components/Navbar';
 import ScrollProgress from './components/ScrollProgress';
 import Hero from './sections/Hero';
 import { GlobalStyles } from './styles/GlobalStyles';
-import { theme } from './styles/theme';
+import theme from './styles/theme';
 
 // Lazy load heavy components
 const About = lazy(() => import('./sections/About'));
@@ -25,7 +26,8 @@ function App() {
   // Add keyboard shortcut to toggle CLI
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key === '`') {
+      if (e.key === 'F1') {
+        e.preventDefault(); // Prevent default F1 help behavior
         setIsCLIOpen(prev => !prev);
       }
     };
@@ -50,6 +52,7 @@ function App() {
       </main>
       <Footer />
       <CLI isOpen={isCLIOpen} onClose={() => setIsCLIOpen(false)} />
+      <MusicPlayer />
     </ThemeProvider>
   );
 }

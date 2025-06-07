@@ -11,6 +11,13 @@ declare module 'styled-components' {
         primary: string;
         secondary: string;
         accent: string;
+        highlight?: string;
+      };
+      cyber: {
+        success: string;
+        warning: string;
+        danger: string;
+        info: string;
       };
       success: string;
       error: string;

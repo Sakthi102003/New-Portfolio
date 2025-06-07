@@ -105,23 +105,36 @@ const MobileMenu = styled(motion.div)`
 `;
 
 const CLIButton = styled(motion.button)`
-  color: ${({ theme }) => theme.colors.primary};
-  background: none;
-  border: none;
+  color: ${({ theme }) => theme.colors.text.primary};
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.primary}40;
   cursor: pointer;
-  padding: ${({ theme }) => theme.spacing.sm};
-  font-size: 1.2rem;
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  font-size: 1rem;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.sm};
   margin-left: ${({ theme }) => theme.spacing.md};
+  border-radius: 4px;
+  font-family: ${({ theme }) => theme.fonts.secondary};
+  transition: all ${({ theme }) => theme.transitions.default};
+  box-shadow: ${({ theme }) => theme.shadows.glow};
 
   &:hover {
-    opacity: 0.8;
+    background: ${({ theme }) => theme.colors.primary}20;
+    border-color: ${({ theme }) => theme.colors.primary};
+    transform: translateY(-1px);
+    box-shadow: ${({ theme }) => theme.shadows.glowStrong};
+  }
+
+  svg {
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: 1.1rem;
   }
 
   span {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+    color: ${({ theme }) => theme.colors.text.secondary};
     @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
       display: none;
     }
@@ -208,12 +221,12 @@ const Navbar = ({ onCLIToggle }: NavbarProps) => {
           ))}
           <CLIButton
             onClick={onCLIToggle}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            title="Open CLI (Ctrl + `)"
+            whileHover={{ y: -1 }}
+            whileTap={{ scale: 0.98 }}
+            title="Open CLI (F1)"
           >
             <FaTerminal />
-            <span>(Ctrl + `)</span>
+            <span>Terminal</span>
           </CLIButton>
         </NavLinks>
 
