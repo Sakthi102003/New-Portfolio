@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            vendor: ['react', 'react-dom', 'styled-components', 'framer-motion'],
+            vendor: ['react', 'react-dom', 'styled-components'],
             animations: ['framer-motion'],
             icons: ['react-icons']
           }
