@@ -35,17 +35,55 @@ const TextContent = styled(motion.div)`
   gap: ${({ theme }) => theme.spacing.lg};
 
   h1 {
-    font-size: 4.5rem;
+    font-size: 4rem;
     font-weight: 700;
     margin: 0;
     color: ${({ theme }) => theme.colors.primary};
-    font-family: ${({ theme }) => theme.fonts.secondary};
-    letter-spacing: 2px;
-    line-height: 1.1;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    position: relative;
+    animation: fadeIn 0.8s ease-out;
+    
+    span {
+      color: ${({ theme }) => theme.colors.text};
+      opacity: 0.9;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+      font-size: 3.5rem;
+    }
+    
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      font-size: 3rem;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      font-size: 2.5rem;
+    }
+      font-size: 3rem;
+      letter-spacing: 2px;
+    }
+    
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+    }
   }
 
   h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 400;
     margin: 0;
     color: ${({ theme }) => theme.colors.text.primary};
@@ -298,7 +336,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <h1 className="glitch" data-text="SAKTHIMURUGAN S">
+          <h1>
             SAKTHIMURUGAN S
           </h1>
           <motion.h2
@@ -306,7 +344,7 @@ const Hero = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            Cybersecurity Specialist & Full Stack Developer
+            Cybersecurity Enthusiast | Developer
           </motion.h2>
         </TextContent>
 

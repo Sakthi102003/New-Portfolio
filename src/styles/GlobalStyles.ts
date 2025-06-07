@@ -17,9 +17,9 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: ${({ theme }) => theme.fonts.secondary};
     background: ${({ theme }) => theme.colors.background};
-    color: #ffffff;
+    color: ${({ theme }) => theme.colors.text.primary};
     line-height: 1.6;
     overflow-x: hidden;
     min-height: 100vh;
@@ -33,7 +33,7 @@ export const GlobalStyles = createGlobalStyle`
     flex-direction: column;
     width: 100%;
     min-height: 100vh;
-    background-color: #000000;
+    background-color: inherit;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -44,12 +44,12 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   a {
-    color: #00ff00;
+    color: ${({ theme }) => theme.colors.text.accent};
     text-decoration: none;
     transition: color 0.3s;
 
     &:hover {
-      color: #0066ff;
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
 
@@ -72,22 +72,22 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-track {
-    background: #000000;
+    background: ${({ theme }) => theme.colors.background};
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #00ff00;
+    background: ${({ theme }) => theme.colors.primary};
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #0066ff;
+    background: ${({ theme }) => theme.colors.secondary};
   }
 
   /* Selection style */
   ::selection {
-    background: #00ff00;
-    color: #000000;
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.background};
   }
 
   /* Professional text highlight effect */

@@ -40,24 +40,42 @@ const TextContent = styled(motion.div)`
     font-weight: 400;
     letter-spacing: 0.3px;
     text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+    
+    &:first-of-type {
+      font-size: 1.2rem;
+      color: ${({ theme }) => theme.colors.text.primary};
+    }
   }
 `;
 
 const InterestsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: ${({ theme }) => theme.spacing.lg};
   margin-top: ${({ theme }) => theme.spacing.xl};
+  width: 100%;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 `;
 
 const InterestCard = styled(motion.div)`
   background: ${({ theme }) => theme.colors.surface};
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.xl};
   border-radius: 8px;
   text-align: center;
   box-shadow: ${({ theme }) => theme.shadows.card};
   border: 1px solid ${({ theme }) => theme.colors.primary}40;
   transition: ${({ theme }) => theme.transitions.default};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     transform: translateY(-5px);
@@ -115,13 +133,13 @@ const About = () => {
   const interests = [
     {
       icon: <FaShieldAlt />,
-      title: 'Information Security',
-      description: 'Passionate about protecting digital assets and implementing robust security measures.',
+      title: 'Security Focus',
+      description: 'Passionate about cybersecurity and implementing secure coding practices.',
     },
     {
       icon: <FaCode />,
-      title: 'Python & Frontend',
-      description: 'Skilled in Python development and creating modern, responsive web applications.',
+      title: 'Full Stack Development',
+      description: 'Building modern web apps with Python backend and React frontend.',
     },
   ];
 
@@ -142,7 +160,13 @@ const About = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <p>
-            I'm a recent B.Sc. Computer Science graduate specializing in Cloud Technology and Information Security from Rathinam College of Arts and Science, Coimbatore. Driven by a passion for cybersecurity, I've built a strong foundation in network security, secure software development, and system protection. I'm also proficient in Python and frontend development, creating responsive web applications. I'm now seeking opportunities to apply my skills, contribute to secure application development, and grow with evolving cybersecurity challenges.
+              👋 Hello! I'm a fresh Computer Science graduate specializing in Cloud Technology and Information Security.
+            </p>
+            <p>
+              💻 Passionate about coding and cybersecurity, I combine Python backend development with modern frontend frameworks to build secure, responsive applications.
+            </p>
+            <p>
+              🎯 Looking to grow and contribute in a dynamic development team while expanding my skills in secure software development.
             </p>
             <HireButton
               href="#contact"
@@ -156,10 +180,22 @@ const About = () => {
             {interests.map((interest, index) => (
               <InterestCard
                 key={interest.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                whileInView={{ 
+                  opacity: 1, 
+                  y: 0, 
+                  scale: 1,
+                  transition: {
+                    type: "spring",
+                    duration: 0.8,
+                    delay: index * 0.2
+                  }
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  transition: { type: "spring", stiffness: 300 }
+                }}
+                viewport={{ once: true, margin: "-50px" }}
               >
                 {interest.icon}
                 <h3>{interest.title}</h3>

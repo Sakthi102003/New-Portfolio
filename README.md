@@ -1,108 +1,107 @@
-# Sakthi's Portfolio
+# My Portfolio Website
 
-A modern, interactive portfolio showcasing my expertise in both cybersecurity and full-stack development. Built with React.js and TypeScript, featuring a unique CLI interface that bridges security and development.
+A modern, responsive portfolio website showcasing my journey as a Computer Science graduate and aspiring developer. Built with React.js and TypeScript, featuring an interactive CLI interface and smooth animations.
 
 🌐 **Live Demo:** [sakthi-s-portfolio.web.app](https://sakthi-s-portfolio.web.app/)
 
-## Features
+## ✨ Key Features
 
-- 💻 Interactive CLI interface (Press Ctrl + ` to access)
-- 🔒 Security-focused projects & implementations
-- 🚀 Full-stack development expertise
-- ✨ Smooth animations using Framer Motion
-- 📱 Fully responsive design
-- 🌐 Social media and GitHub integration
-- 📄 Interactive project showcase
-- 🛠️ Comprehensive skills section
-- 🚀 Performance optimized
+- 🎯 Clean, minimalist design focusing on content
+- 💻 Interactive CLI interface (Press F1 to access)
+- 🚀 Responsive layout for all devices
+- ✨ Smooth animations & transitions
+- 🛠️ Detailed skills showcase with tooltips
+- 📱 Mobile-first approach
+- 🌐 Social media integration
+- ⚡ Fast loading & optimized performance
 
-## Featured Projects
+## 🚀 Technologies Used
 
-1. **File Integrity Checker**
-   - Python-based GUI tool for monitoring and verifying file integrity
-   - Features real-time monitoring and cryptographic hash verification
-   - Built with Python, Tkinter, and cryptography libraries
-
-2. **Reposcope**
-   - GitHub profile analyzer and visualization tool
-   - Provides insights into coding patterns and repository health
-   - Built with React.js and GitHub API
-
-3. **PhishShield**
-   - Machine learning-powered anti-phishing solution
-   - Features URL analysis and real-time threat detection
-   - Built with Python and ML frameworks
-
-4. **Steganography Tool**
-   - Image steganography implementation for secure data hiding
-   - Features multiple encoding algorithms
-   - Built with Python and image processing libraries
-
-## Tech Stack
-
+### Frontend
 - React.js with TypeScript
-- Vite for fast development and building
-- Framer Motion for smooth animations
-- Styled Components for modern styling
+- Styled Components for styling
+- Framer Motion for animations
 - React Icons for UI elements
-- Python for security tools
-- Machine Learning frameworks
-- Cryptography libraries
 
-## Getting Started
+### Development Tools
+- Vite for fast development
+- ESLint for code quality
+- Git for version control
+- VS Code as IDE
+
+### Deployment
+- Firebase Hosting
+- GitHub Actions for CI/CD
+- Environment management
+
+## 🛠️ Setup & Development
+
+### Prerequisites
+- Node.js (version 18 or higher)
+- npm or yarn
+- Git
+
+### Installation
 
 1. Clone the repository:
-```bash
-git clone https://github.com/Sakthi102003/cybersecurity-portfolio.git
+```cmd
+git clone https://github.com/Sakthi102003/portfolio.git
+cd portfolio
 ```
 
 2. Install dependencies:
-```bash
-cd cybersecurity-portfolio
+```cmd
 npm install
 ```
 
-3. Start the development server:
-```bash
+3. Start development server:
+```cmd
 npm run dev
 ```
 
 4. Build for production:
-```bash
+```cmd
 npm run build
 ```
 
-## CLI Commands
+## 💻 CLI Features
 
-The portfolio features an interactive CLI that can be accessed by:
-- Clicking the terminal icon in the navigation bar
-- Using the keyboard shortcut `Ctrl + ```
+Access the CLI by:
+- Clicking the terminal icon in the navigation
+- Pressing the F1 key
 
 Available commands:
-- `help` - List all available commands
-- `about` - Learn about me and my background
-- `skills` - View my technical skills
-- `projects` - Browse my projects
-- `contact` - Get my contact information
-- `clear` - Clear the terminal
-- `exit` - Close the CLI
+- `help` - Show all commands
+- `about` - View my background
+- `skills` - List technical skills
+- `projects` - View my projects
+- `contact` - Get contact info
+- `clear` - Clear terminal
+- `exit` - Close CLI
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 src/
-├── components/       # Reusable components including CLI
-├── sections/        # Main portfolio sections
-├── styles/         # Theme and global styles
-├── hooks/          # Custom React hooks
-└── types/          # TypeScript definitions
+├── components/     # Reusable UI components
+│   ├── CLI/       # Interactive terminal
+│   └── ...        # Other components
+├── sections/      # Main page sections
+├── styles/       # Theme & styling
+├── hooks/        # Custom React hooks
+└── types/        # TypeScript types
 ```
 
-## Connect With Me
+## 🤝 Connect With Me
 
-- 📧 Email: sakthimurugan102003@gmail.com
-- 💻 GitHub: [@Sakthi102003](https://github.com/Sakthi102003)
-- 🔗 LinkedIn: [sakthimurugan-s](https://linkedin.com/in/sakthimurugan-s)
+- 📧 [sakthimurugan102003@gmail.com](mailto:sakthimurugan102003@gmail.com)
+- 💼 [LinkedIn](https://linkedin.com/in/sakthimurugan-s)
+- 🐱 [GitHub](https://github.com/Sakthi102003)
+- ✍️ [Medium](https://medium.com/@sakthimurugan102003)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## License
 

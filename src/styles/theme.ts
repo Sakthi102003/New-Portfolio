@@ -1,7 +1,76 @@
-const baseTheme = {
+interface ThemeType {
   fonts: {
-    primary: "'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif",
-    secondary: "'JetBrains Mono', monospace", // Professional coding font
+    primary: string;
+    secondary: string;
+  };
+  breakpoints: {
+    mobile: string;
+    tablet: string;
+    desktop: string;
+    wide: string;
+  };
+  spacing: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    xxl: string;
+  };
+  transitions: {
+    default: string;
+    fast: string;
+    slow: string;
+  };
+  zIndex: {
+    background: number;
+    default: number;
+    navbar: number;
+    modal: number;
+    tooltip: number;
+  };
+  colors: {
+    primary: string;
+    secondary: string;
+    accent: string;
+    background: string;
+    surface: string;
+    glass: string;
+    dev: {
+      syntax: string;
+      function: string;
+      string: string;
+      keyword: string;
+    };
+    cyber: {
+      success: string;
+      warning: string;
+      danger: string;
+      info: string;
+    };
+    text: {
+      primary: string;
+      secondary: string;
+      accent: string;
+      code?: string;
+      highlight?: string;
+    };
+    error: string;
+    success: string;
+    warning: string;
+    info: string;
+  };
+  shadows: {
+    glow: string;
+    glowStrong: string;
+    card: string;
+  };
+}
+
+const baseTheme: ThemeType = {
+  fonts: {
+    primary: "'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    secondary: "'Share Tech Mono', 'Fira Code', monospace",
   },
   breakpoints: {
     mobile: '320px',
@@ -18,9 +87,9 @@ const baseTheme = {
     xxl: '3rem',
   },
   transitions: {
-    default: '0.3s ease-in-out',
-    fast: '0.15s ease-in-out',
-    slow: '0.5s ease-in-out',
+    default: '0.2s ease-out',
+    fast: '0.1s ease-out',
+    slow: '0.3s ease-in-out',
   },
   zIndex: {
     background: -1,
@@ -30,25 +99,52 @@ const baseTheme = {
     tooltip: 2000,
   },
   colors: {
-    primary: '#4CAF50', // Professional green
-    secondary: '#2196F3', // Professional blue
-    background: '#1a1a1a', // Soft dark background
-    surface: '#242424', // Slightly lighter surface
-    text: {
-      primary: '#ffffff',
-      secondary: '#e0e0e0', // Brighter secondary text
-      accent: '#66bb6a', // Softer green for accents
+    // Core colors - Modern tech-focused palette
+    primary: '#6EE7B7', // Soft mint green
+    secondary: '#3B82F6', // Bright blue
+    accent: '#F43F5E', // Vibrant red
+    
+    // Background and surfaces
+    background: '#020617', // Deep space blue
+    surface: '#0F172A', // Navy blue surface
+    glass: 'rgba(15, 23, 42, 0.9)', // Professional glass effect
+    
+    // Development theme colors - Modern IDE inspired
+    dev: {
+      syntax: '#A5B4FC', // Soft indigo
+      function: '#60A5FA', // Royal blue
+      string: '#34D399', // Emerald
+      keyword: '#F472B6', // Pink
     },
-    error: '#f44336', // Material design red
-    success: '#4CAF50', // Matching primary green
-    warning: '#ff9800', // Professional orange
+    
+    // Cybersecurity theme colors - Professional security tools inspired
+    cyber: {
+      success: '#34D399', // Professional green
+      warning: '#FBBF24', // Amber alert
+      danger: '#F43F5E', // Error red
+      info: '#60A5FA', // Info blue
+    },
+    
+    // Text colors - Clear hierarchy with modern feel
+    text: {
+      primary: '#F8FAFC', // Crisp white
+      secondary: '#94A3B8', // Steel gray
+      accent: '#6EE7B7', // Mint accent
+      code: '#E2E8F0', // Light gray for code
+      highlight: '#6EE7B7', // Mint highlight
+    },
+    
+    // System colors - Clear signaling
+    error: '#F43F5E',
+    success: '#34D399',
+    warning: '#FBBF24',
+    info: '#60A5FA',
   },
   shadows: {
-    glow: '0 0 10px rgba(76, 175, 80, 0.3)', // Subtle green glow
-    glowStrong: '0 0 20px rgba(76, 175, 80, 0.5)', // Stronger but still professional
-    card: '0 4px 6px rgba(0, 0, 0, 0.2)',
+    glow: '0 0 20px rgba(110, 231, 183, 0.15)', // Mint glow
+    glowStrong: '0 0 30px rgba(110, 231, 183, 0.3)', // Strong mint glow
+    card: '0 4px 20px rgba(2, 6, 23, 0.2)', // Subtle card shadow
   }
 } as const;
 
-export const theme = baseTheme;
-export type Theme = typeof theme;
+export default baseTheme;

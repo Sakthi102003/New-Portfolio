@@ -12,7 +12,19 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'dist',
-      sourcemap: true,
+      sourcemap: false,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom', 'styled-components', 'framer-motion'],
+            animations: ['framer-motion'],
+            icons: ['react-icons']
+          }
+        }
+      },
+      chunkSizeWarningLimit: 1000,
+      minify: 'esbuild',
+      target: 'esnext'
     },
     define: {
       'process.env': env
