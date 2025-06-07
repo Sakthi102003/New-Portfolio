@@ -2,7 +2,6 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { CLI } from './components/CLI';
 import Footer from './components/Footer';
-import MusicPlayer from './components/Music';
 import Navbar from './components/Navbar';
 import ScrollProgress from './components/ScrollProgress';
 import Hero from './sections/Hero';
@@ -52,7 +51,6 @@ function App() {
       </main>
       <Footer />
       <CLI isOpen={isCLIOpen} onClose={() => setIsCLIOpen(false)} />
-      <MusicPlayer />
     </ThemeProvider>
   );
 }
