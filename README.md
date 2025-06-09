@@ -10,9 +10,11 @@ A modern, responsive portfolio website showcasing my journey as a Computer Scien
 - 💻 Interactive CLI interface (Press F1 to access)
 - 🚀 Responsive layout for all devices
 - ✨ Smooth animations & transitions
-- 🛠️ Detailed skills showcase with tooltips
+- 🛠️ Detailed skills showcase with tooltips and adaptive theming
 - 📱 Mobile-first approach
 - 🌐 Social media integration
+- 🌓 Dark/Light mode toggle with minimal UI
+- ⏰ Live time display with clock icon
 - ⚡ Fast loading & optimized performance
 
 ## 🚀 Technologies Used
@@ -85,12 +87,26 @@ Available commands:
 src/
 ├── components/     # Reusable UI components
 │   ├── CLI/       # Interactive terminal
+│   ├── ThemeSwitcher.tsx  # Dark/Light mode toggle
+│   ├── TimeDisplay.tsx    # Clock with live time
 │   └── ...        # Other components
 ├── sections/      # Main page sections
-├── styles/       # Theme & styling
-├── hooks/        # Custom React hooks
-└── types/        # TypeScript types
+│   ├── Skills.tsx # Skills section with theme adaptation
+│   └── ...        # Other sections
+├── context/       # React context providers
+│   ├── ThemeContext.tsx  # Theme management
+│   └── ...        # Other contexts
+├── styles/        # Theme & styling
+├── hooks/         # Custom React hooks
+└── types/         # TypeScript types
 ```
+
+## 🎨 UI Improvements
+
+- **Minimal Theme Switcher**: Simplified to show only sun/moon icon instead of text
+- **Skills Display**: Improved contrast in both dark and light modes
+- **Time Display**: Enhanced with clock icon while maintaining time text
+- **Responsive Components**: All UI elements adapt to the current theme
 
 ## 🤝 Connect With Me
 
@@ -103,6 +119,8 @@ src/
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## License
+## 🔄 Recent Updates
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- **2024-07-XX**: Improved theme handling in Skills section for better visibility in light mode
+- **2024-07-XX**: Simplified theme switcher to show only icon for cleaner UI
+- **2024-07-XX**: Enhanced TimeDisplay component with clock icon alongside the time text

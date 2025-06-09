@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
+import { useCallback, useEffect, useState } from 'react';
 import { FaDownload, FaEnvelope, FaGithub, FaLinkedin, FaMapMarkerAlt, FaMedium, FaPhone } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import Particles from 'react-tsparticles';
+import { TypeAnimation } from 'react-type-animation';
 import styled from 'styled-components';
 import { loadFull } from 'tsparticles';
 import type { Engine, MoveDirection, OutMode } from 'tsparticles-engine';
@@ -67,15 +69,9 @@ const TextContent = styled(motion.div)`
     
     @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
       font-size: 3rem;
-    }
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-      font-size: 2.5rem;
-    }
-      font-size: 3rem;
       letter-spacing: 2px;
     }
-    
+
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
       font-size: 2.2rem;
       letter-spacing: 1px;
@@ -215,11 +211,11 @@ const SecondaryButton = styled(Button)`
 `;
 
 // Particles Configuration
-const particlesConfig = {
+const getParticlesConfig = (isMobile: boolean) => ({
   fpsLimit: 30, // Reduced from 60
   particles: {
     number: {
-      value: 40, // Reduced from 80
+      value: isMobile ? 15 : 30, // Fewer particles on mobile
       density: {
         enable: true,
         value_area: 800
@@ -240,7 +236,7 @@ const particlesConfig = {
       random: true,
       anim: {
         enable: true,
-        speed: 1,
+        speed: isMobile ? 0.5 : 1, // Slower animation on mobile
         opacity_min: 0.1,
         sync: false
       }
@@ -250,13 +246,13 @@ const particlesConfig = {
       random: true,
       anim: {
         enable: true,
-        speed: 1,
+        speed: isMobile ? 0.5 : 1, // Slower animation on mobile
         size_min: 0.1,
         sync: false
       }
     },
     links: {
-      enable: true,
+      enable: !isMobile, // Disable links on mobile for better performance
       distance: 150,
       color: "#00ff00",
       opacity: 0.2,
@@ -267,13 +263,13 @@ const particlesConfig = {
     },
     move: {
       enable: true,
-      speed: 1, // Reduced from 1.5
+      speed: isMobile ? 0.5 : 1, // Slower on mobile
       direction: "none" as MoveDirection,
       random: false,
       straight: false,
       outModes: "bounce" as OutMode,
       attract: {
-        enable: true,
+        enable: !isMobile, // Disable attract on mobile
         rotateX: 600,
         rotateY: 1200
       }
@@ -283,7 +279,7 @@ const particlesConfig = {
     detectOn: "canvas",
     events: {
       onHover: {
-        enable: true,
+        enable: !isMobile, // Disable hover effects on mobile
         mode: "grab"
       },
       onClick: {
@@ -300,7 +296,7 @@ const particlesConfig = {
         }
       },
       push: {
-        quantity: 4
+        quantity: isMobile ? 2 : 4 // Fewer particles added on mobile
       }
     }
   },
@@ -309,27 +305,57 @@ const particlesConfig = {
   background: {
     color: "transparent"
   }
-};
+});
 
-const Hero = () => {
-  const particlesInit = async (engine: Engine) => {
+interface HeroProps {
+  disableParticles?: boolean;
+}
+
+const Hero = ({ disableParticles = false }: HeroProps) => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [showParticles, setShowParticles] = useState(!disableParticles);
+  
+  // Detect mobile devices
+  useEffect(() => {
+    const checkMobile = () => {
+      const width = window.innerWidth;
+      setIsMobile(width <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  // Check for user preference (reduced motion)
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      setShowParticles(false);
+    }
+  }, []);
+  
+  const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
-  };
+  }, []);
 
   return (
     <HeroSection id="hero">
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={particlesConfig}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-        }}
-      />
+      {showParticles && (
+        <Particles
+          id="tsparticles"
+          init={particlesInit}
+          options={getParticlesConfig(isMobile)}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+          }}
+        />
+      )}
       <HeroContent>
         <TextContent
           initial={{ opacity: 0, y: -30 }}
@@ -343,8 +369,26 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
+            style={{ 
+              fontSize: '2rem', 
+              fontWeight: 400,
+              margin: 0,
+              letterSpacing: '3px',
+              opacity: 0.9
+            }}
           >
-            Cybersecurity Enthusiast | Developer
+            <TypeAnimation
+              sequence={[
+                'Cybersecurity Enthusiast',
+                1000,
+                'Developer',
+                1000
+              ]}
+              wrapper="span"
+              speed={50}
+              repeat={Infinity}
+              style={{ display: 'inline-block' }}
+            />
           </motion.h2>
         </TextContent>
 

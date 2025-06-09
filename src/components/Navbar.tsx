@@ -2,7 +2,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FaBars, FaTerminal, FaTimes } from 'react-icons/fa';
 import styled from 'styled-components';
+import { useTheme } from '../context/ThemeContext';
 import { useScrollSpy } from '../hooks/useScrollSpy';
+import Button from './Button';
+import ThemeSwitcher from './ThemeSwitcher';
 import { TimeDisplay } from './TimeDisplay';
 
 const Nav = styled.nav`
@@ -30,6 +33,10 @@ const Logo = styled(motion.div)`
   color: ${({ theme }) => theme.colors.primary};
   text-transform: uppercase;
   letter-spacing: 2px;
+  
+  span.portfolio {
+    color: ${({ theme }) => theme.colors.text.primary};
+  }
 `;
 
 const NavLinks = styled.div`
@@ -91,7 +98,8 @@ const MobileMenu = styled(motion.div)`
   left: 0;
   right: 0;
   bottom: 0;
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => `${theme.colors.background}f5`};
+  backdrop-filter: blur(10px);
   padding: ${({ theme }) => theme.spacing.xl};
   z-index: ${({ theme }) => theme.zIndex.modal};
 
@@ -104,42 +112,7 @@ const MobileMenu = styled(motion.div)`
   }
 `;
 
-const CLIButton = styled(motion.button)`
-  color: ${({ theme }) => theme.colors.text.primary};
-  background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.primary}40;
-  cursor: pointer;
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-  margin-left: ${({ theme }) => theme.spacing.md};
-  border-radius: 4px;
-  font-family: ${({ theme }) => theme.fonts.secondary};
-  transition: all ${({ theme }) => theme.transitions.default};
-  box-shadow: ${({ theme }) => theme.shadows.glow};
 
-  &:hover {
-    background: ${({ theme }) => theme.colors.primary}20;
-    border-color: ${({ theme }) => theme.colors.primary};
-    transform: translateY(-1px);
-    box-shadow: ${({ theme }) => theme.shadows.glowStrong};
-  }
-
-  svg {
-    color: ${({ theme }) => theme.colors.primary};
-    font-size: 1.1rem;
-  }
-
-  span {
-    font-size: 0.9rem;
-    color: ${({ theme }) => theme.colors.text.secondary};
-    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-      display: none;
-    }
-  }
-`;
 
 interface NavLink {
   href: string;
@@ -191,10 +164,12 @@ const Navbar = ({ onCLIToggle }: NavbarProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const { theme } = useTheme();
+  
   return (
     <Nav
       style={{
-        background: scrolled ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
+        background: scrolled ? `${theme.colors.background}99` : 'transparent',
       }}
     >
       <NavContainer>
@@ -203,7 +178,7 @@ const Navbar = ({ onCLIToggle }: NavbarProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span style={{ marginRight: '0.5rem' }}>SAKTHI'S</span><span style={{ color: '#fff' }}>PORTFOLIO</span>
+          <span style={{ marginRight: '0.5rem' }}>SAKTHI'S</span><span className="portfolio">PORTFOLIO</span>
           <TimeDisplay />
         </Logo>
 
@@ -220,15 +195,16 @@ const Navbar = ({ onCLIToggle }: NavbarProps) => {
               {text}
             </NavLink>
           ))}
-          <CLIButton
+          <ThemeSwitcher />
+          <Button
             onClick={onCLIToggle}
-            whileHover={{ y: -1 }}
-            whileTap={{ scale: 0.98 }}
+            variant="cli"
+            size="medium"
             title="Open CLI (F1)"
+            icon={<FaTerminal />}
           >
-            <FaTerminal />
-            <span>Terminal</span>
-          </CLIButton>
+            Terminal
+          </Button>
         </NavLinks>
 
         <MobileMenuButton
@@ -249,9 +225,10 @@ const Navbar = ({ onCLIToggle }: NavbarProps) => {
             id="mobile-menu"
             role="navigation"
             aria-label="Mobile navigation"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             {navLinks.map(({ href, text, isExternal }) => (
               <NavLink
@@ -264,10 +241,33 @@ const Navbar = ({ onCLIToggle }: NavbarProps) => {
                   scrollToSection(e, href, isExternal);
                   setIsOpen(false);
                 }}
+                style={{
+                  fontSize: '1.5rem',
+                  margin: '0.5rem 0',
+                  padding: '0.5rem'
+                }}
               >
                 {text}
               </NavLink>
             ))}
+            <ThemeSwitcher />
+            
+            <Button
+              onClick={() => {
+                onCLIToggle();
+                setIsOpen(false);
+              }}
+              variant="cli"
+              size="large"
+              title="Open CLI (F1)"
+              icon={<FaTerminal />}
+              style={{
+                marginTop: '1.5rem',
+                width: '200px'
+              }}
+            >
+              Terminal
+            </Button>
           </MobileMenu>
         )}
       </AnimatePresence>

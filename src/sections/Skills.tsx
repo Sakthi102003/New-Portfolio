@@ -1,19 +1,27 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import {
-    FaCode,
-    FaFireAlt,
-    FaGitAlt, FaGithub,
-    FaHtml5,
-    FaJs,
-    FaLinux,
-    FaNetworkWired,
-    FaPython, FaReact, FaServer
+  FaCode,
+  FaFireAlt,
+  FaGitAlt, FaGithub,
+  FaHtml5,
+  FaJs,
+  FaLinux,
+  FaPython, FaReact, FaServer
 } from 'react-icons/fa';
 import { HiCommandLine } from 'react-icons/hi2';
 import { SiCentos, SiFlask, SiKalilinux, SiTailwindcss, SiUbuntu } from 'react-icons/si';
 import { TbBrandVscode } from 'react-icons/tb';
 import styled from 'styled-components';
+import { useTheme } from '../context/ThemeContext';
+
+// Define a type for Skill
+interface Skill {
+  name: string;
+  icon: React.ReactNode;
+  description: string;
+  level?: number;
+}
 
 const SkillsSection = styled.section`
   padding: ${({ theme }) => theme.spacing.xl} 0;
@@ -48,11 +56,19 @@ const SkillsGrid = styled.div`
   padding: ${({ theme }) => theme.spacing.xl};
 `;
 
-const SkillCategory = styled(motion.div)`
-  background: rgba(32, 32, 32, 0.95);
+const SkillCategory = styled(motion.div)<{ $isDark?: boolean }>`
+  background: ${({ $isDark = false }) => 
+    $isDark 
+      ? 'rgba(32, 32, 32, 0.95)' 
+      : 'rgba(240, 240, 240, 0.95)'
+  };
   padding: ${({ theme }) => theme.spacing.lg};
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: ${({ $isDark = false }) => 
+    $isDark
+      ? '0 8px 32px rgba(0, 0, 0, 0.3)' 
+      : '0 8px 32px rgba(0, 0, 0, 0.1)'
+  };
   border: 1px solid ${({ theme }) => theme.colors.primary}20;
   backdrop-filter: blur(10px);
   display: flex;
@@ -65,20 +81,27 @@ const SkillCategory = styled(motion.div)`
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: ${({ $isDark = false }) => 
+      $isDark
+        ? '0 12px 40px rgba(0, 0, 0, 0.4)' 
+        : '0 12px 40px rgba(0, 0, 0, 0.15)'
+    };
     border-color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
-const SkillName = styled.span`
-  color: ${({ theme }) => theme.colors.text.primary};
+const SkillName = styled.span<{ $isDark?: boolean }>`
+  color: ${({ theme, $isDark = false }) => 
+    $isDark 
+      ? theme.colors.text.primary 
+      : '#000000'};
   font-size: 1rem;
   font-family: 'IBM Plex Mono', monospace;
-  font-weight: 500;
+  font-weight: 700;
   margin-top: ${({ theme }) => theme.spacing.sm};
 `;
 
-const SkillIcon = styled.div`
+const SkillIcon = styled.div<{ $isDark?: boolean }>`
   font-size: 3rem;
   color: ${({ theme }) => theme.colors.primary};
   margin-bottom: ${({ theme }) => theme.spacing.md};
@@ -89,7 +112,10 @@ const SkillIcon = styled.div`
 
   ${SkillCategory}:hover & {
     transform: scale(1.1);
-    color: ${({ theme }) => theme.colors.text.primary};
+    color: ${({ theme, $isDark = false }) => 
+      $isDark 
+        ? theme.colors.text.primary
+        : theme.colors.text.primary};
   }
 `;
 
@@ -128,25 +154,34 @@ const SkillWrapper = styled.div`
   height: 100%;
 `;
 
-const skillCategories = [
+
+
+const skillCategories: {
+  title: string;
+  icon: React.ReactNode;
+  skills: Skill[];
+}[] = [
   {
     title: 'Languages',
     icon: <FaCode />,
     skills: [
       { 
         name: 'Python',
-        icon: <FaPython />,
-        description: 'Building backend services and automation scripts. Experience with Django, Flask, and data analysis.'
+        icon: <FaPython />, 
+        description: 'Building backend services and automation scripts. Experience with Django, Flask, and data analysis.',
+        level: 90
       },
       { 
         name: 'JavaScript',
-        icon: <FaJs />,
-        description: 'Modern ES6+ features, async programming, and frontend development.'
+        icon: <FaJs />, 
+        description: 'Modern ES6+ features, async programming, and frontend development.',
+        level: 80
       },
       { 
         name: 'HTML/CSS',
-        icon: <FaHtml5 />,
-        description: 'Semantic HTML5, modern CSS3 features, responsive design, and animations.'
+        icon: <FaHtml5 />, 
+        description: 'Semantic HTML5, modern CSS3 features, responsive design, and animations.',
+        level: 85
       },
     ],
   },
@@ -157,17 +192,20 @@ const skillCategories = [
       { 
         name: 'React.js',
         icon: <FaReact />,
-        description: 'Building modern SPAs with hooks, context, and state management.'
+        description: 'Building modern SPAs with hooks, context, and state management.',
+        level: 85
       },
       { 
         name: 'TailwindCSS',
         icon: <SiTailwindcss />,
-        description: 'Utility-first CSS framework for rapid UI development.'
+        description: 'Utility-first CSS framework for rapid UI development.',
+        level: 80
       },
       { 
         name: 'ShadCN UI',
         icon: <HiCommandLine />,
-        description: 'Component library built on Radix UI for accessible web applications.'
+        description: 'Component library built on Radix UI for accessible web applications.',
+        level: 70
       },
     ],
   },
@@ -178,59 +216,68 @@ const skillCategories = [
       { 
         name: 'Flask',
         icon: <SiFlask />,
-        description: 'Lightweight Python web framework for building RESTful APIs.'
+        description: 'Python micro web framework for building APIs and web apps.',
+        level: 75
+      },
+      { 
+        name: 'Machine Learning',
+        icon: <FaFireAlt />,
+        description: 'Experience with ML algorithms, scikit-learn, and data pipelines.',
+        level: 70
       },
       { 
         name: 'GitHub API',
         icon: <FaGithub />,
-        description: 'Integration with GitHub for automation and data analysis.'
-      },
-      { 
-        name: 'ML/AI',
-        icon: <FaNetworkWired />,
-        description: 'Basic machine learning concepts and implementation using Python libraries.'
+        description: 'Integrating GitHub data and automating workflows.',
+        level: 65
       },
     ],
   },
   {
-    title: 'Tools & Platforms',
-    icon: <FaGitAlt />,
+    title: 'Tools & OS',
+    icon: <FaLinux />,
     skills: [
       { 
-        name: 'Git/GitHub',
-        icon: <FaGithub />,
-        description: 'Version control, collaboration, and CI/CD workflows.'
-      },
-      { 
-        name: 'Firebase',
-        icon: <FaFireAlt />,
-        description: 'Backend-as-a-Service for authentication, database, and hosting.'
+        name: 'Git',
+        icon: <FaGitAlt />,
+        description: 'Version control, branching, and collaboration.',
+        level: 85
       },
       { 
         name: 'VS Code',
         icon: <TbBrandVscode />,
-        description: 'Primary IDE with extensive customization and extension development.'
+        description: 'Primary code editor with extensive customization.',
+        level: 90
       },
-    ],
-  },
-  {
-    title: 'Operating Systems',
-    icon: <FaLinux />,
-    skills: [
+      { 
+        name: 'Linux',
+        icon: <FaLinux />,
+        description: 'Ubuntu, Kali Linux, CentOS for development and security.',
+        level: 80
+      },
+      { 
+        name: 'Firebase',
+        icon: <FaServer />,
+        description: 'Backend-as-a-Service for hosting and authentication.',
+        level: 70
+      },
       { 
         name: 'Ubuntu',
         icon: <SiUbuntu />,
-        description: 'Daily driver for development with strong command line experience.'
+        description: 'Daily driver OS for development.',
+        level: 80
       },
       { 
         name: 'Kali Linux',
         icon: <SiKalilinux />,
-        description: 'Security testing and penetration testing environment.'
+        description: 'Penetration testing and security research.',
+        level: 65
       },
       { 
         name: 'CentOS',
         icon: <SiCentos />,
-        description: 'Server administration and deployment experience.'
+        description: 'Server management and deployment.',
+        level: 60
       },
     ],
   },
@@ -239,6 +286,7 @@ const skillCategories = [
 const Skills = () => {
   // Add state for tooltip
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  const { isDarkMode } = useTheme();
 
   return (
     <SkillsSection id="skills">
@@ -253,10 +301,11 @@ const Skills = () => {
         </SectionTitle>
 
         <SkillsGrid>
-          {skillCategories.flatMap(category => 
-            category.skills.map((skill, index) => (
+          {skillCategories.flatMap((category: { title: string; icon: React.ReactNode; skills: Skill[] }) => 
+            category.skills.map((skill: Skill, index: number) => (
               <SkillCategory
                 key={skill.name}
+                $isDark={isDarkMode}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -265,10 +314,10 @@ const Skills = () => {
                 onMouseLeave={() => setActiveTooltip(null)}
               >
                 <SkillWrapper>
-                  <SkillIcon>
+                  <SkillIcon $isDark={isDarkMode}>
                     {skill.icon}
                   </SkillIcon>
-                  <SkillName>{skill.name}</SkillName>
+                  <SkillName $isDark={isDarkMode}>{skill.name}</SkillName>
                   <AnimatePresence>
                     {activeTooltip === skill.name && (
                       <Tooltip
