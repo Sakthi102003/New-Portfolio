@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FaExternalLinkAlt, FaFilter, FaGithub } from 'react-icons/fa';
 import styled from 'styled-components';
-import { SecurityIcon } from '../components/SecurityIcons';
+// Remove unused import
+// import { SecurityIcon } from '../components/SecurityIcons';
 
 const ProjectsSection = styled.section`
   padding: ${({ theme }) => theme.spacing.xl} 0;
@@ -35,6 +36,7 @@ const ProjectCard = styled(motion.div)`
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadows.card};
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+  cursor: pointer;
 `;
 
 const FilterContainer = styled.div`
@@ -135,7 +137,9 @@ const ProjectLink = styled(motion.a)`
   transition: all ${({ theme }) => theme.transitions.default};
   
   &:hover {
-    background: ${({ theme }) => `${theme.colors.primary}10`};
+    color: ${({ theme }) => theme.colors.text.primary};
+    background: ${({ theme }) => theme.colors.primary};
+    transform: scale(1.1);
   }
 `;
 
@@ -232,26 +236,24 @@ const Projects: React.FC = () => {
         </FilterContainer>
 
         <ProjectsGrid>
-          {filteredProjects.map((project, index) => (
+          {filteredProjects.map((project, idx) => (
             <ProjectCard
               key={project.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: idx * 0.15 }}
+              whileHover={{ scale: 1.03, boxShadow: '0 16px 48px rgba(0,0,0,0.5)' }}
             >
               <ProjectImage>
-                <CategoryBadge>
-                  <SecurityIcon type={project.iconType} size={20} />
-                  {project.category}
-                </CategoryBadge>
-                <img src={project.image} alt={project.title} loading="lazy" />
+                <img src={project.image} alt={project.title} />
+                <CategoryBadge>{project.category}</CategoryBadge>
               </ProjectImage>
               <ProjectContent>
                 <ProjectTitle>{project.title}</ProjectTitle>
                 <ProjectDescription>{project.description}</ProjectDescription>
                 <TechStack>
-                  {project.techStack.map((tech) => (
+                  {project.techStack.map(tech => (
                     <TechTag key={tech}>{tech}</TechTag>
                   ))}
                 </TechStack>
@@ -261,9 +263,8 @@ const Projects: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                   >
-                    <FaGithub /> Code
+                    <FaGithub /> GitHub
                   </ProjectLink>
                   {project.demoLink && (
                     <ProjectLink
@@ -271,7 +272,6 @@ const Projects: React.FC = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
                     >
                       <FaExternalLinkAlt /> Demo
                     </ProjectLink>

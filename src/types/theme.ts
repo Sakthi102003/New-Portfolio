@@ -2,16 +2,33 @@ export interface Theme {
   colors: {
     primary: string;
     secondary: string;
+    accent: string;
     background: string;
     surface: string;
+    glass: string;
+    dev: {
+      syntax: string;
+      function: string;
+      string: string;
+      keyword: string;
+    };
+    cyber: {
+      success: string;
+      warning: string;
+      danger: string;
+      info: string;
+    };
     text: {
       primary: string;
       secondary: string;
       accent: string;
+      code?: string;
+      highlight?: string;
     };
     error: string;
     success: string;
     warning: string;
+    info: string;
   };
   fonts: {
     primary: string;

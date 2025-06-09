@@ -1,4 +1,16 @@
 import { useEffect, useState } from 'react';
+import { FaClock } from 'react-icons/fa';
+import styled from 'styled-components';
+
+const TimeWrapper = styled.div`
+  font-family: monospace;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.text.primary};
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
 
 export const TimeDisplay = () => {
   const [time, setTime] = useState(new Date());
@@ -21,13 +33,9 @@ export const TimeDisplay = () => {
   };
 
   return (
-    <div style={{
-      fontFamily: 'monospace',
-      fontSize: '1rem',
-      color: '#fff',
-      marginTop: '0.5rem'
-    }}>
+    <TimeWrapper>
+      <FaClock />
       {formatTime(time)}
-    </div>
+    </TimeWrapper>
   );
 };
