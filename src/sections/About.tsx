@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { FaBriefcase, FaCode, FaShieldAlt } from 'react-icons/fa';
 import styled from 'styled-components';
+import GithubContributions from '../components/GithubContributions';
 
 const AboutSection = styled.section`
   padding: ${({ theme }) => theme.spacing.sm} 0 ${({ theme }) => theme.spacing.xl};
@@ -148,7 +149,8 @@ const About = () => {
       <Container>
         <SectionTitle
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
           About Me
@@ -204,6 +206,15 @@ const About = () => {
             ))}
           </InterestsGrid>
         </AboutContent>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <GithubContributions username="Sakthi102003" />
+        </motion.div>
       </Container>
     </AboutSection>
   );

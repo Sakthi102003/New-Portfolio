@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { FaBars, FaTerminal, FaTimes } from 'react-icons/fa';
 import styled from 'styled-components';
 import { useScrollSpy } from '../hooks/useScrollSpy';
+import { TimeDisplay } from './TimeDisplay';
 
 const Nav = styled.nav`
   position: fixed;
@@ -11,9 +12,8 @@ const Nav = styled.nav`
   right: 0;
   z-index: ${({ theme }) => theme.zIndex.navbar};
   padding: ${({ theme }) => theme.spacing.md};
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid ${({ theme }) => theme.colors.primary};
+  background: transparent;
+  backdrop-filter: blur(5px);
 `;
 
 const NavContainer = styled.div`
@@ -194,7 +194,7 @@ const Navbar = ({ onCLIToggle }: NavbarProps) => {
   return (
     <Nav
       style={{
-        background: scrolled ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.8)',
+        background: scrolled ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
       }}
     >
       <NavContainer>
@@ -204,6 +204,7 @@ const Navbar = ({ onCLIToggle }: NavbarProps) => {
           transition={{ duration: 0.5 }}
         >
           <span style={{ marginRight: '0.5rem' }}>SAKTHI'S</span><span style={{ color: '#fff' }}>PORTFOLIO</span>
+          <TimeDisplay />
         </Logo>
 
         <NavLinks>
