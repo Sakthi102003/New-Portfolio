@@ -1,21 +1,29 @@
 import { motion } from 'framer-motion';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { FaDownload, FaEnvelope, FaGithub, FaLinkedin, FaMapMarkerAlt, FaMedium, FaPhone } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import Particles from 'react-tsparticles';
 import { TypeAnimation } from 'react-type-animation';
-import styled from 'styled-components';
+import type { DefaultTheme } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import { loadFull } from 'tsparticles';
 import type { Engine, MoveDirection, OutMode } from 'tsparticles-engine';
 
-const HeroSection = styled.section`
+// Styled Components
+interface StyledComponentProps {
+  theme?: DefaultTheme;
+  $isDarkMode?: boolean;  // Make this optional
+  className?: string;
+}
+
+const HeroSection = styled.section`  // Remove the generic type here
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme?.spacing?.xl || '2rem'} ${({ theme }) => theme?.spacing?.xl || '2rem'} ${({ theme }) => theme?.spacing?.sm || '1rem'};
 `;
 
 const HeroContent = styled.div`
@@ -45,36 +53,163 @@ const TextContent = styled(motion.div)`
     letter-spacing: 1px;
     line-height: 1.2;
     position: relative;
-    animation: fadeIn 0.8s ease-out;
+    animation: ${({ theme }) => 
+      theme.colors.background === '#F8FAFC' 
+        ? 'lightModeTitle' 
+        : 'darkModeTitle'
+    } 1s ease-out;
+
+    span {
+      position: relative;
+      transition: transform 0.3s ease;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: ${({ theme }) => theme.colors.primary};
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.4s ease;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        &::after {
+          transform: scaleX(1);
+          transform-origin: left;
+        }
+      }
+    }
+  }
+
+  @keyframes lightModeTitle {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+      filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+    }
+  }
+
+  @keyframes darkModeTitle {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+      text-shadow: 0 0 0 rgba(110, 231, 183, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      text-shadow: 0 0 30px rgba(110, 231, 183, 0.3);
+    }
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 3px;
+    opacity: 0.95;
+
+    &.light-mode {
+      animation: lightModeSubtitle 2s ease-in-out infinite alternate;
+    }
+
+    &.dark-mode {
+      animation: darkModeSubtitle 2s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes lightModeSubtitle {
+    0% {
+      transform: translateY(0);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    100% {
+      transform: translateY(-3px);
+      text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  }    @keyframes darkModeSubtitle {
+    0% {
+      transform: translateY(0);
+      text-shadow: 0 0 10px ${({ theme }) => (theme?.colors?.primary || '#000') + '40'};
+    }
+    100% {
+      transform: translateY(-3px);
+      text-shadow: 0 0 20px ${({ theme }) => (theme?.colors?.primary || '#000') + '80'};
+    }
+  }
+  position: relative;
+
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    margin: 0;
+    color: ${({ theme }) => theme.colors.primary};
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    position: relative;
+    animation: ${({ theme }) => 
+      theme.colors.background === '#F8FAFC' ? 'lightIntro' : 'darkIntro'
+    } 0.8s ease-out;
     
     span {
-      color: ${({ theme }) => theme.colors.text};
-      opacity: 0.9;
+      color: ${({ theme }) => theme.colors.text.primary};
+      opacity: 0.95;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: ${({ theme }) => theme.colors.primary};
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.5s ease;
+      }
+      
+      &:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
     }
-    
-    @keyframes fadeIn {
+
+    @keyframes darkFadeIn {
       from {
         opacity: 0;
         transform: translateY(10px);
+        text-shadow: 0 0 20px ${({ theme }) => theme.colors.primary}00;
       }
       to {
         opacity: 1;
         transform: translateY(0);
+        text-shadow: 0 0 20px ${({ theme }) => theme.colors.primary}40;
       }
     }
-    
-    @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-      font-size: 3.5rem;
-    }
-    
-    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-      font-size: 3rem;
-      letter-spacing: 2px;
-    }
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-      font-size: 2.2rem;
-      letter-spacing: 1px;
+    @keyframes lightFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+      }
     }
   }
 
@@ -85,16 +220,47 @@ const TextContent = styled(motion.div)`
     color: ${({ theme }) => theme.colors.text.primary};
     font-family: ${({ theme }) => theme.fonts.secondary};
     letter-spacing: 3px;
-    opacity: 0.9;
+    opacity: 0.95;
+
+    @keyframes darkGlow {
+      from {
+        text-shadow: 0 0 10px ${({ theme }) => theme.colors.primary}20;
+      }
+      to {
+        text-shadow: 0 0 20px ${({ theme }) => theme.colors.primary}60;
+      }
+    }
+
+    @keyframes lightGlow {
+      from {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        transform: translateY(0);
+      }
+      to {
+        text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+      }
+    }
   }
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    h1 { font-size: 3.5rem; }
+  }
+    
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    h1 {
+    h1 { 
       font-size: 3rem;
+      letter-spacing: 2px;
     }
-    h2 {
-      font-size: 1.4rem;
+    h2 { font-size: 1.8rem; }
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    h1 { 
+      font-size: 2.2rem;
+      letter-spacing: 1px;
     }
+    h2 { font-size: 1.5rem; }
   }
 `;
 
@@ -210,6 +376,46 @@ const SecondaryButton = styled(Button)`
   }
 `;
 
+const AnimatedSubtitle = styled.h2<StyledComponentProps>`
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0;
+  color: ${({ theme }) => theme?.colors?.text?.primary};
+  font-family: ${({ theme }) => theme?.fonts?.secondary};
+  letter-spacing: 3px;
+  opacity: 0.95;
+
+  &.light-mode {
+    animation: lightModeSubtitle 2s ease-in-out infinite alternate;
+  }
+
+  &.dark-mode {
+    animation: darkModeSubtitle 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes darkModeSubtitle {
+    0% {
+      transform: translateY(0);
+      text-shadow: 0 0 10px ${({ theme }) => (theme?.colors?.primary || '#000') + '40'};
+    }
+    100% {
+      transform: translateY(-3px);
+      text-shadow: 0 0 20px ${({ theme }) => (theme?.colors?.primary || '#000') + '80'};
+    }
+  }
+
+  @keyframes lightModeSubtitle {
+    0% {
+      transform: translateY(0);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    100% {
+      transform: translateY(-3px);
+      text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
+`;
+
 // Particles Configuration
 const getParticlesConfig = (isMobile: boolean) => ({
   fpsLimit: 30, // Reduced from 60
@@ -311,9 +517,10 @@ interface HeroProps {
   disableParticles?: boolean;
 }
 
-const Hero = ({ disableParticles = false }: HeroProps) => {
+const Hero: React.FC<HeroProps> = ({ disableParticles = false }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [showParticles, setShowParticles] = useState(!disableParticles);
+  const theme = useContext(ThemeContext);
   
   // Detect mobile devices
   useEffect(() => {
@@ -340,8 +547,10 @@ const Hero = ({ disableParticles = false }: HeroProps) => {
     await loadFull(engine);
   }, []);
 
+  const isDarkMode = theme?.colors?.background !== '#F8FAFC';
+
   return (
-    <HeroSection id="hero">
+    <HeroSection>
       {showParticles && (
         <Particles
           id="tsparticles"
@@ -363,20 +572,9 @@ const Hero = ({ disableParticles = false }: HeroProps) => {
           transition={{ duration: 1 }}
         >
           <h1>
-            SAKTHIMURUGAN S
+            <span>SAKTHIMURUGAN S</span>
           </h1>
-          <motion.h2
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            style={{ 
-              fontSize: '2rem', 
-              fontWeight: 400,
-              margin: 0,
-              letterSpacing: '3px',
-              opacity: 0.9
-            }}
-          >
+          <AnimatedSubtitle $isDarkMode={isDarkMode} className={isDarkMode ? 'dark-mode' : 'light-mode'}>
             <TypeAnimation
               sequence={[
                 'Cybersecurity Enthusiast',
@@ -389,7 +587,7 @@ const Hero = ({ disableParticles = false }: HeroProps) => {
               repeat={Infinity}
               style={{ display: 'inline-block' }}
             />
-          </motion.h2>
+          </AnimatedSubtitle>
         </TextContent>
 
         <ContactInfo
