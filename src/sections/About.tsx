@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { FaBriefcase, FaCode, FaShieldAlt } from 'react-icons/fa';
 import styled from 'styled-components';
-import GithubContributions from '../components/GithubContributions';
+import EnhancedGithubStats from '../components/EnhancedGithubStats';
 
 const AboutSection = styled.section`
   padding: ${({ theme }) => theme.spacing.sm} 0 ${({ theme }) => theme.spacing.xl};
@@ -213,7 +213,7 @@ const About = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <GithubContributions username="Sakthi102003" />
+          <EnhancedGithubStats username="Sakthi102003" />
         </motion.div>
       </Container>
     </AboutSection>
