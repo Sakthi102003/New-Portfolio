@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
-import { FaExternalLinkAlt, FaFilter, FaGithub } from 'react-icons/fa';
+import React from 'react';
+import { FaArrowRight, FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-// Remove unused import
-// import { SecurityIcon } from '../components/SecurityIcons';
+import { projects } from '../data/projects';
 
 const ProjectsSection = styled.section`
   padding: ${({ theme }) => theme.spacing.xl} 0;
@@ -28,6 +28,7 @@ const ProjectsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: ${({ theme }) => theme.spacing.xl};
+  padding-top: ${({ theme }) => theme.spacing.xl};
 `;
 
 const ProjectCard = styled(motion.div)`
@@ -37,25 +38,6 @@ const ProjectCard = styled(motion.div)`
   box-shadow: ${({ theme }) => theme.shadows.card};
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
   cursor: pointer;
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing.md};
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-  flex-wrap: wrap;
-`;
-
-const FilterButton = styled(motion.button)<{ $active: boolean }>`
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.lg}`};
-  background: ${({ theme, $active }) => ($active ? theme.colors.primary : 'transparent')};
-  color: ${({ theme, $active }) => ($active ? theme.colors.background : theme.colors.primary)};
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all ${({ theme }) => theme.transitions.default};
-  font-family: ${({ theme }) => theme.fonts.primary};
 `;
 
 const ProjectImage = styled.div`
@@ -143,71 +125,53 @@ const ProjectLink = styled(motion.a)`
   }
 `;
 
-interface Project {
-  title: string;
-  description: string;
-  category: string;
-  techStack: string[];
-  githubLink: string;
-  demoLink?: string;
-  image: string;
-  iconType: 'lock' | 'shield' | 'code' | 'network' | 'bug' | 'encryption';
-}
+const ViewDetailsButton = styled(motion.button)`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.background};
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  width: 100%;
+  justify-content: center;
+  margin-top: ${({ theme }) => theme.spacing.md};
 
-const projects: Project[] = [
-  {
-    title: "File Integrity Checker",
-    description: "A Python-based GUI tool for monitoring and verifying file integrity using cryptographic hashing. Features real-time monitoring, multiple hash algorithms (MD5, SHA-256), and alerts for unauthorized modifications.",
-    category: "Information Security",
-    techStack: ["Python", "Tkinter", "Cryptography", "File System"],
-    githubLink: "https://github.com/Sakthi102003/File-Integrity-Checker",
-    image: "/projects/network-monitor.svg",
-    iconType: "shield"
-  },
-  {
-    title: "Stegnogrpahy",
-    description: "A Python-based steganography tool that allows you to hide messages within images. It supports both LSB and PVD steganography techniques.",
-    category: "Information Security",
-    techStack: ["Python", "Cryptography", "CLI"],
-    githubLink: "https://github.com/Sakthi102003/Steganography",
-    image: "/projects/network-monitor.svg",
-    iconType: "encryption"
-  },
-  {
-    title: "Reposcope",
-    description: "A powerful web application that provides deep insights into GitHub profiles, helping users understand their coding journey and potential areas for improvement. Features include account value estimation, repository overview, tech stack analysis, activity timeline, and AI-powered recommendations.",
-    category: "Security Analytics",
-    techStack: ["React", "TypeScript", "Tailwind CSS", "GitHub API"],
-    githubLink: "https://github.com/Sakthi102003/Reposcope",
-    demoLink: "https://reposcope-2003.web.app",
-    image: "/projects/security-dashboard.svg",
-    iconType: "code"
-  },
-  {
-    title: "PhishShield",
-    description: "An advanced anti-phishing solution that combines machine learning and real-time threat detection to protect users from phishing attacks. Features include URL analysis, email scanning, and browser extension integration.",
-    category: "Cybersecurity",
-    techStack: ["React", "TypeScript", "Machine Learning", "Node.js", "Security APIs"],
-    githubLink: "https://github.com/Sakthi102003/PhisShield",
-    demoLink: "https://phisshield.onrender.com/",
-    image: "/projects/vulnerability-scanner.svg",
-    iconType: "shield"
+  &:hover {
+    opacity: 0.9;
   }
-];
+`;
 
 const Projects: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
-  
-  const categories = ["All", ...new Set(projects.map(project => project.category))];
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    setFilteredProjects(
-      selectedCategory === "All"
-        ? projects
-        : projects.filter(project => project.category === selectedCategory)
-    );
-  }, [selectedCategory]);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
+
+  const handleViewDetails = (projectTitle: string) => {
+    navigate(`/projects/${encodeURIComponent(projectTitle)}`);
+  };
 
   return (
     <ProjectsSection id="projects">
@@ -221,66 +185,69 @@ const Projects: React.FC = () => {
           Projects
         </SectionTitle>
 
-        <FilterContainer>
-          {categories.map(category => (
-            <FilterButton
-              key={category}
-              $active={category === selectedCategory}
-              onClick={() => setSelectedCategory(category)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaFilter style={{ marginRight: '8px' }} /> {category}
-            </FilterButton>
-          ))}
-        </FilterContainer>
-
-        <ProjectsGrid>
-          {filteredProjects.map((project, idx) => (
-            <ProjectCard
-              key={project.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.15 }}
-              whileHover={{ scale: 1.03, boxShadow: '0 16px 48px rgba(0,0,0,0.5)' }}
-            >
-              <ProjectImage>
-                <img src={project.image} alt={project.title} />
-                <CategoryBadge>{project.category}</CategoryBadge>
-              </ProjectImage>
-              <ProjectContent>
-                <ProjectTitle>{project.title}</ProjectTitle>
-                <ProjectDescription>{project.description}</ProjectDescription>
-                <TechStack>
-                  {project.techStack.map(tech => (
-                    <TechTag key={tech}>{tech}</TechTag>
-                  ))}
-                </TechStack>
-                <ProjectLinks>
-                  <ProjectLink
-                    href={project.githubLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    <FaGithub /> GitHub
-                  </ProjectLink>
-                  {project.demoLink && (
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <ProjectsGrid>
+            {projects.map((project) => (
+              <ProjectCard
+                key={project.title}
+                variants={itemVariants}
+                whileHover={{ 
+                  scale: 1.03, 
+                  boxShadow: '0 16px 48px rgba(0,0,0,0.15)',
+                  transition: { duration: 0.2 }
+                }}
+              >
+                <ProjectImage>
+                  <img src={project.image} alt={project.title} />
+                  <CategoryBadge>
+                    {project.category}
+                  </CategoryBadge>
+                </ProjectImage>
+                <ProjectContent>
+                  <ProjectTitle>{project.title}</ProjectTitle>
+                  <ProjectDescription>{project.description}</ProjectDescription>
+                  <TechStack>
+                    {project.techStack.map(tech => (
+                      <TechTag key={tech}>{tech}</TechTag>
+                    ))}
+                  </TechStack>
+                  <ProjectLinks>
                     <ProjectLink
-                      href={project.demoLink}
+                      href={project.githubLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.05 }}
                     >
-                      <FaExternalLinkAlt /> Demo
+                      <FaGithub /> GitHub
                     </ProjectLink>
-                  )}
-                </ProjectLinks>
-              </ProjectContent>
-            </ProjectCard>
-          ))}
-        </ProjectsGrid>
+                    {project.demoLink && (
+                      <ProjectLink
+                        href={project.demoLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <FaExternalLinkAlt /> Demo
+                      </ProjectLink>
+                    )}
+                  </ProjectLinks>
+                  <ViewDetailsButton
+                    onClick={() => handleViewDetails(project.title)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    View Details <FaArrowRight />
+                  </ViewDetailsButton>
+                </ProjectContent>
+              </ProjectCard>
+            ))}
+          </ProjectsGrid>
+        </motion.div>
       </Container>
     </ProjectsSection>
   );

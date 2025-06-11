@@ -15,8 +15,7 @@ const Nav = styled.nav`
   right: 0;
   z-index: ${({ theme }) => theme.zIndex.navbar};
   padding: ${({ theme }) => theme.spacing.md};
-  background: transparent;
-  backdrop-filter: blur(5px);
+  background: ${({ theme }) => theme.colors.background};
 `;
 
 const NavContainer = styled.div`

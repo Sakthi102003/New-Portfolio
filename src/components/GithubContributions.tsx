@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import GitHubCalendar from 'react-github-calendar';
-import { FaCode, FaCodeBranch, FaGithub, FaStar } from 'react-icons/fa';
+import {
+    FaCode,
+    FaCodeBranch,
+    FaGithub,
+    FaStar
+} from 'react-icons/fa';
 import styled from 'styled-components';
 
 const ContributionsContainer = styled.div`
@@ -40,10 +45,13 @@ const StatCard = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
+  border: 1px solid ${({ theme }) => theme.colors.primary}20;
 
   &:hover {
     transform: translateY(-2px);
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: ${({ theme }) => theme.shadows.glow};
   }
 
   svg {
@@ -66,9 +74,17 @@ const StatValue = styled.span`
 const IframeContainer = styled.div`
   width: 100%;
   overflow: hidden;
-  border-radius: 6px;
-  background: ${({ theme }) => theme.colors.background};
-  padding: 1rem;
+  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.surface};
+  padding: 2rem;
+  margin: 1.5rem 0;
+  border: 1px solid ${({ theme }) => theme.colors.primary}20;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: ${({ theme }) => theme.shadows.glow};
+  }
   
   img {
     width: 100%;
@@ -77,12 +93,54 @@ const IframeContainer = styled.div`
   }
 `;
 
+const StatsCardsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const StatsCard = styled.div`
+  background: ${({ theme }) => theme.colors.background};
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.primary}20;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: ${({ theme }) => theme.shadows.glow};
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  h4 {
+    color: ${({ theme }) => theme.colors.text.primary};
+    margin: 1rem 0;
+    font-size: 1.1rem;
+  }
+`;
+
 interface GithubContributionsProps {
   username: string;
 }
 
 const GithubContributions = ({ username }: GithubContributionsProps) => {
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<{
+    publicRepos: number;
+    totalContributions: number;
+    followers: number;
+    stars: number;
+  }>({
     publicRepos: 0,
     totalContributions: 0,
     followers: 0,
@@ -153,8 +211,31 @@ const GithubContributions = ({ username }: GithubContributionsProps) => {
       </StatsContainer>
 
       <IframeContainer>
-        <GitHubCalendar username={username} blockSize={15} blockMargin={5} fontSize={14} />
+        <GitHubCalendar
+          username={username}
+          blockSize={12}
+          blockRadius={2}
+          blockMargin={4}
+          fontSize={14}
+          theme={{
+            dark: ['#1e1e26', '#15803d', '#16a34a', '#22c55e', '#4ade80']
+          }}
+          style={{ width: '100%' }}
+          year="last"
+        />
       </IframeContainer>
+
+      <StatsCardsContainer>
+        {/* Additional stats cards can be added here */}
+        <StatsCard>
+          <h4>Top Languages</h4>
+          {/* Content for top languages */}
+        </StatsCard>
+        <StatsCard>
+          <h4>Most Active Repositories</h4>
+          {/* Content for active repositories */}
+        </StatsCard>
+      </StatsCardsContainer>
     </ContributionsContainer>
   );
 };
