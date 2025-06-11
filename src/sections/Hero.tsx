@@ -7,7 +7,7 @@ import { TypeAnimation } from 'react-type-animation';
 import type { DefaultTheme } from 'styled-components';
 import styled, { ThemeContext } from 'styled-components';
 import { loadFull } from 'tsparticles';
-import type { Engine, MoveDirection, OutMode } from 'tsparticles-engine';
+import type { Engine, MoveDirection } from 'tsparticles-engine';
 
 // Styled Components
 interface StyledComponentProps {
@@ -60,28 +60,14 @@ const TextContent = styled(motion.div)`
     } 1s ease-out;
 
     span {
+      color: ${({ theme }) => theme.colors.text.primary};
+      opacity: 0.95;
       position: relative;
-      transition: transform 0.3s ease;
-
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: ${({ theme }) => theme.colors.primary};
-        transform: scaleX(0);
-        transform-origin: right;
-        transition: transform 0.4s ease;
-      }
+      transition: all 0.3s ease;
 
       &:hover {
         transform: translateY(-2px);
-        &::after {
-          transform: scaleX(1);
-          transform-origin: left;
-        }
+        text-shadow: 0 3px 6px ${({ theme }) => theme.colors.primary}40;
       }
     }
   }
@@ -166,24 +152,6 @@ const TextContent = styled(motion.div)`
       color: ${({ theme }) => theme.colors.text.primary};
       opacity: 0.95;
       position: relative;
-      
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: ${({ theme }) => theme.colors.primary};
-        transform: scaleX(0);
-        transform-origin: right;
-        transition: transform 0.5s ease;
-      }
-      
-      &:hover::after {
-        transform: scaleX(1);
-        transform-origin: left;
-      }
     }
 
     @keyframes darkFadeIn {
@@ -416,102 +384,7 @@ const AnimatedSubtitle = styled.h2<StyledComponentProps>`
   }
 `;
 
-// Particles Configuration
-const getParticlesConfig = (isMobile: boolean) => ({
-  fpsLimit: 30, // Reduced from 60
-  particles: {
-    number: {
-      value: isMobile ? 15 : 30, // Fewer particles on mobile
-      density: {
-        enable: true,
-        value_area: 800
-      }
-    },
-    color: {
-      value: ["#00ff00", "#00cc00", "#009900"]
-    },
-    shape: {
-      type: "circle",
-      stroke: {
-        width: 0,
-        color: "#000000"
-      }
-    },
-    opacity: {
-      value: 0.2,
-      random: true,
-      anim: {
-        enable: true,
-        speed: isMobile ? 0.5 : 1, // Slower animation on mobile
-        opacity_min: 0.1,
-        sync: false
-      }
-    },
-    size: {
-      value: 2,
-      random: true,
-      anim: {
-        enable: true,
-        speed: isMobile ? 0.5 : 1, // Slower animation on mobile
-        size_min: 0.1,
-        sync: false
-      }
-    },
-    links: {
-      enable: !isMobile, // Disable links on mobile for better performance
-      distance: 150,
-      color: "#00ff00",
-      opacity: 0.2,
-      width: 1,
-      triangles: {
-        enable: false
-      }
-    },
-    move: {
-      enable: true,
-      speed: isMobile ? 0.5 : 1, // Slower on mobile
-      direction: "none" as MoveDirection,
-      random: false,
-      straight: false,
-      outModes: "bounce" as OutMode,
-      attract: {
-        enable: !isMobile, // Disable attract on mobile
-        rotateX: 600,
-        rotateY: 1200
-      }
-    }
-  },
-  interactivity: {
-    detectOn: "canvas",
-    events: {
-      onHover: {
-        enable: !isMobile, // Disable hover effects on mobile
-        mode: "grab"
-      },
-      onClick: {
-        enable: true,
-        mode: "push"
-      },
-      resize: true
-    },
-    modes: {
-      grab: {
-        distance: 140,
-        links: {
-          opacity: 0.4
-        }
-      },
-      push: {
-        quantity: isMobile ? 2 : 4 // Fewer particles added on mobile
-      }
-    }
-  },
-  retina_detect: true,
-  fullScreen: false,
-  background: {
-    color: "transparent"
-  }
-});
+// Initialize particles system
 
 interface HeroProps {
   disableParticles?: boolean;
@@ -545,9 +418,104 @@ const Hero: React.FC<HeroProps> = ({ disableParticles = false }) => {
   
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
-  }, []);
+  }, []);    const isDarkMode = theme?.colors?.background !== '#F8FAFC';
 
-  const isDarkMode = theme?.colors?.background !== '#F8FAFC';
+  const particleConfig = useCallback((isMobile: boolean) => ({
+    fpsLimit: 30,
+    particles: {
+      number: {
+        value: isMobile ? 15 : 30,
+        density: {
+          enable: true,
+          value_area: 1200
+        }
+      },
+      color: {
+        value: isDarkMode 
+          ? ["#4B5563", "#6B7280", "#9CA3AF"]  // Subtle gray tones for dark mode
+          : ["#94A3B8", "#CBD5E1", "#E2E8F0"] // Light gray tones for light mode
+      },
+      shape: {
+        type: "circle",
+        options: {
+          polygon: {
+            sides: 6
+          }
+        }
+      },
+      opacity: {
+        value: isDarkMode ? 0.2 : 0.1,
+        random: false,
+        anim: {
+          enable: true,
+          speed: 0.2,
+          opacity_min: isDarkMode ? 0.1 : 0.05,
+          sync: false
+        }
+      },
+      size: {
+        value: 2,
+        random: true,
+        anim: {
+          enable: true,
+          speed: 0.2,
+          size_min: 0.5,
+          sync: false
+        }
+      },
+      links: {
+        enable: true,
+        distance: 200,
+        color: isDarkMode ? "#4B5563" : "#94A3B8",
+        opacity: isDarkMode ? 0.15 : 0.1,
+        width: 1,
+        triangles: {
+          enable: false
+        }
+      },
+      move: {
+        enable: true,
+        speed: isMobile ? 0.3 : 0.5,
+        direction: "none" as MoveDirection,
+        random: false,
+        straight: false,
+        out_mode: "bounce" as "bounce",
+        attract: {
+          enable: true,
+          rotateX: 300,
+          rotateY: 600
+        }
+      }
+    },
+    interactivity: {
+      detectOn: "canvas",
+      events: {
+        onHover: {
+          enable: !isMobile,
+          mode: "connect"
+        },
+        onClick: {
+          enable: false,
+          mode: "push"
+        },
+        resize: true
+      },
+      modes: {
+        connect: {
+          distance: 200,
+          links: {
+            opacity: isDarkMode ? 0.15 : 0.1
+          },
+          radius: 120
+        }
+      }
+    },
+    retina_detect: true,
+    fullScreen: false,
+    background: {
+      color: "transparent"
+    }
+  }), [isDarkMode]);
 
   return (
     <HeroSection>
@@ -555,7 +523,7 @@ const Hero: React.FC<HeroProps> = ({ disableParticles = false }) => {
         <Particles
           id="tsparticles"
           init={particlesInit}
-          options={getParticlesConfig(isMobile)}
+          options={particleConfig(isMobile)}
           style={{
             position: 'absolute',
             top: 0,

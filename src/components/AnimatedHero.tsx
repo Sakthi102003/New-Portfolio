@@ -48,27 +48,11 @@ export const AnimatedTitle = styled(motion.h1)`
     color: ${({ theme }) => theme.colors.text.primary};
     opacity: 0.95;
     position: relative;
-    transition: transform 0.3s ease;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: ${({ theme }) => theme.colors.primary};
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.4s ease;
-    }
+    transition: all 0.3s ease;
 
     &:hover {
       transform: translateY(-2px);
-      &::after {
-        transform: scaleX(1);
-        transform-origin: left;
-      }
+      text-shadow: 0 3px 6px ${({ theme }) => theme.colors.primary}40;
     }
   }
 `;

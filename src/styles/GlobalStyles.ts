@@ -51,6 +51,14 @@ export const GlobalStyles = createGlobalStyle`
     &:hover {
       color: ${({ theme }) => theme.colors.primary};
     }
+    
+    &[href^="#"] {
+      text-decoration: none !important;
+      
+      &:hover {
+        text-decoration: none !important;
+      }
+    }
   }
 
   button {
