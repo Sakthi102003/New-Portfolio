@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import { FaArrowLeft, FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
-import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ProjectDetailsContainer = styled(motion.div)`
@@ -114,7 +113,7 @@ const ProjectImage = styled(motion.img)`
 `;
 
 interface ProjectDetailsProps {
-  projects: {
+  project?: {
     title: string;
     description: string;
     category: string;
@@ -126,16 +125,13 @@ interface ProjectDetailsProps {
     role?: string;
     detailedDescription?: string;
     images?: string[];
-  }[];
+  };
+  onClose: () => void;
 }
 
-const ProjectDetails: React.FC<ProjectDetailsProps> = ({ projects }) => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const project = projects.find(p => p.title === decodeURIComponent(id || ''));
-
+const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project, onClose }) => {
   if (!project) {
-    return <div>Project not found</div>;
+    return null;
   }
 
   return (
@@ -147,7 +143,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ projects }) => {
     >
       <DetailContent>
         <BackButton
-          onClick={() => navigate('/')}
+          onClick={onClose}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

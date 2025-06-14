@@ -1,8 +1,9 @@
-import { motion } from 'framer-motion';
-import React from 'react';
-import { FaArrowRight, FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import ProjectDetails from '../components/ProjectDetails';
 import { projects } from '../data/projects';
 
 const ProjectsSection = styled.section`
@@ -125,28 +126,19 @@ const ProjectLink = styled(motion.a)`
   }
 `;
 
-const ViewDetailsButton = styled(motion.button)`
-  display: inline-flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.background};
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  width: 100%;
-  justify-content: center;
-  margin-top: ${({ theme }) => theme.spacing.md};
-
-  &:hover {
-    opacity: 0.9;
-  }
-`;
-
 const Projects: React.FC = () => {
-  const navigate = useNavigate();
+  const location = useLocation();
+  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | undefined>();
+
+  useEffect(() => {
+    if (location.state && (location.state as { scrollToProjects: boolean }).scrollToProjects) {
+      const projectsSection = document.getElementById('projects');
+      if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: 'smooth' });
+        window.history.replaceState({}, document.title);
+      }
+    }
+  }, [location]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -167,10 +159,6 @@ const Projects: React.FC = () => {
         duration: 0.5
       }
     }
-  };
-
-  const handleViewDetails = (projectTitle: string) => {
-    navigate(`/projects/${encodeURIComponent(projectTitle)}`);
   };
 
   return (
@@ -236,18 +224,20 @@ const Projects: React.FC = () => {
                       </ProjectLink>
                     )}
                   </ProjectLinks>
-                  <ViewDetailsButton
-                    onClick={() => handleViewDetails(project.title)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    View Details <FaArrowRight />
-                  </ViewDetailsButton>
                 </ProjectContent>
               </ProjectCard>
             ))}
           </ProjectsGrid>
         </motion.div>
+
+        <AnimatePresence>
+          {selectedProject && (
+            <ProjectDetails
+              project={selectedProject}
+              onClose={() => setSelectedProject(undefined)}
+            />
+          )}
+        </AnimatePresence>
       </Container>
     </ProjectsSection>
   );
