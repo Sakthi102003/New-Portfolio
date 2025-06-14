@@ -62,5 +62,32 @@ export const projects: Project[] = [
     iconType: "shield",
     role: "Developed the machine learning models for phishing detection, created the React frontend, and implemented the security API integrations.",
     images: ["/projects/vulnerability-scanner.svg"]
+  },
+  {
+    title: "Tech IQ",
+    description: "A modern tech stack recommendation platform powered by AI, helping developers make informed technology choices for their projects.",
+    detailedDescription: "Tech IQ is a sophisticated recommendation system built with React 18 and Node.js that leverages AI to suggest optimal technology stacks. It provides real-time, context-aware recommendations by analyzing project requirements through OpenAI and Google Gemini integration. The platform features a responsive Tailwind CSS UI with fluid animations, secure Firebase authentication, and efficient state management with Zustand. Key features include interactive tech comparisons, real-time validation with Zod, and seamless form handling with React Hook Form.",
+    category: "Developer Tools",
+    techStack: [
+      "React 18",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Node.js",
+      "Firebase",
+      "OpenAI",
+      "Google Gemini",
+      "Zustand",
+      "React Router",
+      "React Hook Form",
+      "Zod"
+    ],
+    githubLink: "https://github.com/Sakthi102003/Tech-IQ",
+    demoLink: "https://tech-iq.onrender.com",
+    image: "/projects/security-dashboard.svg",
+    iconType: "code",
+    role: "Architected and developed the full-stack application, implementing modern React patterns with hooks, integrating AI services, and creating a responsive UI with Tailwind CSS and Framer Motion animations. Set up authentication flow with Firebase and designed the state management system using Zustand.",
+    images: ["/projects/security-dashboard.svg"]
   }
 ];

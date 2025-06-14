@@ -7,7 +7,6 @@ import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import ScrollProgress from './components/ScrollProgress';
 import { ThemeContextProvider, useTheme } from './context/ThemeContext';
-import { projects } from './data/projects';
 import { GlobalStyles } from './styles/GlobalStyles';
 
 // Lazy load components
@@ -16,7 +15,6 @@ const About = lazy(() => import('./sections/About'));
 const Skills = lazy(() => import('./sections/Skills'));
 const Projects = lazy(() => import('./sections/Projects'));
 const Contact = lazy(() => import('./sections/Contact'));
-const ProjectDetails = lazy(() => import('./components/ProjectDetails'));
 
 function AppContent() {
   const [isCLIOpen, setIsCLIOpen] = useState(false);
@@ -69,14 +67,6 @@ function AppContent() {
                       <Contact />
                     </Suspense>
                   </>
-                }
-              />
-              <Route
-                path="/projects/:id"
-                element={
-                  <Suspense fallback={<div>Loading...</div>}>
-                    <ProjectDetails projects={projects} />
-                  </Suspense>
                 }
               />
             </Routes>
