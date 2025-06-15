@@ -1,3 +1,9 @@
+@import "./styles/variables.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -27,4 +33,274 @@ button {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+/* Hacker Mode Styles */
+.hacker-mode {
+  background: #000000;
+  color: #00ff00;
+  font-family: 'Fira Code', 'IBM Plex Mono', 'Consolas', 'Monaco', monospace;
+  overflow: hidden;
+}
+
+/* CRT Scanlines Effect */
+.scanlines::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 255, 0, 0.03) 50%
+  );
+  background-size: 100% 4px;
+  animation: scanlines 0.1s linear infinite;
+  z-index: 1000;
+}
+
+/* Matrix Background Effect */
+.matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.matrix-char {
+  position: absolute;
+  color: #00ff41;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  animation: matrix-rain 20s linear infinite;
+  opacity: 0.7;
+}
+
+/* Glitch Effect */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  animation: glitch 0.3s infinite;
+  color: #ff0000;
+  z-index: -1;
+}
+
+.glitch::after {
+  animation: glitch 0.3s infinite reverse;
+  color: #00ffff;
+  z-index: -2;
+}
+
+/* Terminal Cursor */
+.terminal-cursor::after {
+  content: '█';
+  animation: blink 1s infinite;
+  color: #00ff00;
+}
+
+/* Typewriter Effect */
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid #00ff00;
+  white-space: nowrap;
+  animation: typewriter 2s steps(40) 1s 1 normal both, blink 1s infinite;
+}
+
+/* Custom Scrollbar for Hacker Mode */
+.hacker-mode::-webkit-scrollbar {
+  width: 8px;
+}
+
+.hacker-mode::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.hacker-mode::-webkit-scrollbar-thumb {
+  background: #00ff00;
+  border-radius: 4px;
+}
+
+.hacker-mode::-webkit-scrollbar-thumb:hover {
+  background: #00ff41;
+}
+
+/* Terminal Prompt Styles */
+.terminal-prompt {
+  color: #00ff00;
+  font-weight: bold;
+}
+
+.terminal-output {
+  color: #00ff00;
+  white-space: pre-wrap;
+  font-family: 'Fira Code', monospace;
+}
+
+/* Neon Glow Effects */
+.neon-glow {
+  text-shadow: 
+    0 0 5px #00ff00,
+    0 0 10px #00ff00,
+    0 0 15px #00ff00,
+    0 0 20px #00ff00;
+}
+
+.neon-border {
+  border: 1px solid #00ff00;
+  box-shadow: 
+    0 0 5px #00ff00,
+    inset 0 0 5px #00ff00;
+}
+
+/* Hacker Mode Styles */
+.hacker-mode {
+  background: #000000;
+  color: #00ff00;
+  font-family: 'Fira Code', 'IBM Plex Mono', 'Consolas', 'Monaco', monospace;
+  overflow: hidden;
+}
+
+/* CRT Scanlines Effect */
+.scanlines::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 255, 0, 0.03) 50%
+  );
+  background-size: 100% 4px;
+  animation: scanlines 0.1s linear infinite;
+  z-index: 1000;
+}
+
+/* Matrix Background Effect */
+.matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.matrix-char {
+  position: absolute;
+  color: #00ff41;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  animation: matrix-rain 20s linear infinite;
+  opacity: 0.7;
+}
+
+/* Glitch Effect */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  animation: glitch 0.3s infinite;
+  color: #ff0000;
+  z-index: -1;
+}
+
+.glitch::after {
+  animation: glitch 0.3s infinite reverse;
+  color: #00ffff;
+  z-index: -2;
+}
+
+/* Terminal Cursor */
+.terminal-cursor::after {
+  content: '█';
+  animation: blink 1s infinite;
+  color: #00ff00;
+}
+
+/* Typewriter Effect */
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid #00ff00;
+  white-space: nowrap;
+  animation: typewriter 2s steps(40) 1s 1 normal both, blink 1s infinite;
+}
+
+/* Custom Scrollbar for Hacker Mode */
+.hacker-mode::-webkit-scrollbar {
+  width: 8px;
+}
+
+.hacker-mode::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.hacker-mode::-webkit-scrollbar-thumb {
+  background: #00ff00;
+  border-radius: 4px;
+}
+
+.hacker-mode::-webkit-scrollbar-thumb:hover {
+  background: #00ff41;
+}
+
+/* Terminal Prompt Styles */
+.terminal-prompt {
+  color: #00ff00;
+  font-weight: bold;
+}
+
+.terminal-output {
+  color: #00ff00;
+  white-space: pre-wrap;
+  font-family: 'Fira Code', monospace;
+}
+
+/* Neon Glow Effects */
+.neon-glow {
+  text-shadow: 
+    0 0 5px #00ff00,
+    0 0 10px #00ff00,
+    0 0 15px #00ff00,
+    0 0 20px #00ff00;
+}
+
+.neon-border {
+  border: 1px solid #00ff00;
+  box-shadow: 
+    0 0 5px #00ff00,
+    inset 0 0 5px #00ff00;
 }

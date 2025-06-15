@@ -8,229 +8,124 @@ import type { DefaultTheme } from 'styled-components';
 import styled, { ThemeContext } from 'styled-components';
 import { loadFull } from 'tsparticles';
 import type { Engine, MoveDirection } from 'tsparticles-engine';
+import ContactItem from '../styles/ContactItem';
 
-// Styled Components
+// Interfaces
 interface StyledComponentProps {
   theme?: DefaultTheme;
-  $isDarkMode?: boolean;  // Make this optional
+  $isDarkMode?: boolean;
   className?: string;
 }
 
-const HeroSection = styled.section`  // Remove the generic type here
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  padding: ${({ theme }) => theme?.spacing?.xl || '2rem'} ${({ theme }) => theme?.spacing?.xl || '2rem'} ${({ theme }) => theme?.spacing?.sm || '1rem'};
-`;
+interface ContactItemProps {
+  theme?: DefaultTheme;
+}
 
-const HeroContent = styled.div`
-  max-width: 1000px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xl};
-  z-index: 1;
-  text-align: center;
-  padding: ${({ theme }) => theme.spacing.xxl} 0;
-`;
+// Styled Components
+const StyledContactItem = styled.div<ContactItemProps>(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+  color: theme?.colors?.text?.secondary,
+  fontSize: '1rem',
+  transition: `all ${theme?.transitions?.default}`,
+  'svg': {
+    color: theme?.colors?.primary,
+    fontSize: '1.2rem'
+  },
+  'a': {
+    color: 'inherit',
+    textDecoration: 'none',
+    transition: `color ${theme?.transitions?.default}`,
+    '&:hover': {
+      color: theme?.colors?.primary
+    }
+  }
+}));
 
-const TextContent = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.lg};
+const HeroSection = styled.section<StyledComponentProps>(({ theme }) => ({
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'relative',
+  overflow: 'hidden',
+  padding: `${theme?.spacing?.xl || '2rem'} ${theme?.spacing?.xl || '2rem'} ${theme?.spacing?.sm || '1rem'}`
+}));
 
-  h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    margin: 0;
-    color: ${({ theme }) => theme.colors.primary};
-    font-family: 'Inter', sans-serif;
-    letter-spacing: 1px;
-    line-height: 1.2;
-    position: relative;
-    animation: ${({ theme }) => 
-      theme.colors.background === '#F8FAFC' 
-        ? 'lightModeTitle' 
-        : 'darkModeTitle'
-    } 1s ease-out;
+const HeroContent = styled.div<StyledComponentProps>(({ theme }) => ({
+  maxWidth: '1000px',
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: theme?.spacing?.xl,
+  zIndex: 1,
+  textAlign: 'center',
+  padding: `${theme?.spacing?.xxl || '2rem'} 0`
+}));
 
-    span {
-      color: ${({ theme }) => theme.colors.text.primary};
-      opacity: 0.95;
-      position: relative;
-      transition: all 0.3s ease;
-
-      &:hover {
-        transform: translateY(-2px);
-        text-shadow: 0 3px 6px ${({ theme }) => theme.colors.primary}40;
+const TextContent = styled(motion.div)<StyledComponentProps>(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: theme?.spacing?.md,
+  '.contact-details': {
+    display: 'flex',
+    gap: '2rem',
+    justifyContent: 'center',
+    margin: '0.5rem 0',
+    [StyledContactItem as any]: {
+      background: 'transparent',
+      color: theme?.colors?.text?.secondary,
+      fontSize: '0.9rem',
+      padding: '0.25rem 0.5rem',
+      '&:hover': {
+        background: 'transparent',
+        transform: 'none'
+      },
+      'svg': {
+        fontSize: '1rem'
       }
     }
-  }
-
-  @keyframes lightModeTitle {
-    0% {
-      opacity: 0;
-      transform: translateY(-20px);
-      filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  },
+  '@media (max-width: 640px)': {
+    '.contact-details': {
+      flexDirection: 'column',
+      gap: '0.5rem',
+      margin: '0.75rem 0'
     }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-      filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
-    }
-  }
-
-  @keyframes darkModeTitle {
-    0% {
-      opacity: 0;
-      transform: translateY(-20px);
-      text-shadow: 0 0 0 rgba(110, 231, 183, 0);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-      text-shadow: 0 0 30px rgba(110, 231, 183, 0.3);
-    }
-  }
-
-  h2 {
-    font-size: 2rem;
-    font-weight: 400;
-    margin: 0;
-    letter-spacing: 3px;
-    opacity: 0.95;
-
-    &.light-mode {
-      animation: lightModeSubtitle 2s ease-in-out infinite alternate;
-    }
-
-    &.dark-mode {
-      animation: darkModeSubtitle 2s ease-in-out infinite alternate;
-    }
-  }
-
-  @keyframes lightModeSubtitle {
-    0% {
-      transform: translateY(0);
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    }
-    100% {
-      transform: translateY(-3px);
-      text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
-    }
-  }    @keyframes darkModeSubtitle {
-    0% {
-      transform: translateY(0);
-      text-shadow: 0 0 10px ${({ theme }) => (theme?.colors?.primary || '#000') + '40'};
-    }
-    100% {
-      transform: translateY(-3px);
-      text-shadow: 0 0 20px ${({ theme }) => (theme?.colors?.primary || '#000') + '80'};
-    }
-  }
-  position: relative;
-
-  h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    margin: 0;
-    color: ${({ theme }) => theme.colors.primary};
-    font-family: 'Inter', sans-serif;
-    letter-spacing: 1px;
-    line-height: 1.2;
-    position: relative;
-    animation: ${({ theme }) => 
-      theme.colors.background === '#F8FAFC' ? 'lightIntro' : 'darkIntro'
-    } 0.8s ease-out;
-    
-    span {
-      color: ${({ theme }) => theme.colors.text.primary};
-      opacity: 0.95;
-      position: relative;
-    }
-
-    @keyframes darkFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-        text-shadow: 0 0 20px ${({ theme }) => theme.colors.primary}00;
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-        text-shadow: 0 0 20px ${({ theme }) => theme.colors.primary}40;
+  },
+  'h1': {
+    fontSize: '4rem',
+    fontWeight: 700,
+    margin: 0,
+    color: theme?.colors?.primary,
+    fontFamily: "'Inter', sans-serif",
+    letterSpacing: '1px',
+    lineHeight: 1.2,
+    position: 'relative',
+    'span': {
+      color: theme?.colors?.text?.primary,
+      opacity: 0.95,
+      position: 'relative',
+      transition: 'all 0.3s ease',
+      '&:hover': {
+        transform: 'translateY(-2px)',
+        textShadow: `0 3px 6px ${theme?.colors?.primary}40`
       }
     }
-
-    @keyframes lightFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-        text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
-      }
-    }
+  },
+  'h2': {
+    fontSize: '2rem',
+    fontWeight: 400,
+    margin: 0,
+    color: theme?.colors?.text?.primary,
+    fontFamily: theme?.fonts?.secondary,
+    letterSpacing: '3px',
+    opacity: 0.95
   }
-
-  h2 {
-    font-size: 2rem;
-    font-weight: 400;
-    margin: 0;
-    color: ${({ theme }) => theme.colors.text.primary};
-    font-family: ${({ theme }) => theme.fonts.secondary};
-    letter-spacing: 3px;
-    opacity: 0.95;
-
-    @keyframes darkGlow {
-      from {
-        text-shadow: 0 0 10px ${({ theme }) => theme.colors.primary}20;
-      }
-      to {
-        text-shadow: 0 0 20px ${({ theme }) => theme.colors.primary}60;
-      }
-    }
-
-    @keyframes lightGlow {
-      from {
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        transform: translateY(0);
-      }
-      to {
-        text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
-        transform: translateY(-2px);
-      }
-    }
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    h1 { font-size: 3.5rem; }
-  }
-    
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    h1 { 
-      font-size: 3rem;
-      letter-spacing: 2px;
-    }
-    h2 { font-size: 1.8rem; }
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    h1 { 
-      font-size: 2.2rem;
-      letter-spacing: 1px;
-    }
-    h2 { font-size: 1.5rem; }
-  }
-`;
+}));
 
 const ContactInfo = styled(motion.div)`
   display: grid;
@@ -273,26 +168,25 @@ const ContactInfo = styled(motion.div)`
       grid-template-columns: 1fr;
     }
   }
-`;
 
-const ContactItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-  padding: ${({ theme }) => theme.spacing.sm};
-  background: ${({ theme }) => `${theme.colors.primary}08`};
-  border-radius: 8px;
-  transition: all ${({ theme }) => theme.transitions.default};
-  
-  svg {
-    color: ${({ theme }) => theme.colors.primary};
-    font-size: 1.2rem;
+  .contact-details {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    
+    ${ContactItem} {
+      color: ${({ theme }) => theme.colors.text.secondary};
+      font-size: 0.9rem;
+    }
   }
 
-  &:hover {
-    background: ${({ theme }) => `${theme.colors.primary}10`};
-    transform: translateY(-2px);
+  @media (max-width: 640px) {
+    .contact-details {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
   }
 `;
 
@@ -352,36 +246,6 @@ const AnimatedSubtitle = styled.h2<StyledComponentProps>`
   font-family: ${({ theme }) => theme?.fonts?.secondary};
   letter-spacing: 3px;
   opacity: 0.95;
-
-  &.light-mode {
-    animation: lightModeSubtitle 2s ease-in-out infinite alternate;
-  }
-
-  &.dark-mode {
-    animation: darkModeSubtitle 2s ease-in-out infinite alternate;
-  }
-
-  @keyframes darkModeSubtitle {
-    0% {
-      transform: translateY(0);
-      text-shadow: 0 0 10px ${({ theme }) => (theme?.colors?.primary || '#000') + '40'};
-    }
-    100% {
-      transform: translateY(-3px);
-      text-shadow: 0 0 20px ${({ theme }) => (theme?.colors?.primary || '#000') + '80'};
-    }
-  }
-
-  @keyframes lightModeSubtitle {
-    0% {
-      transform: translateY(0);
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    }
-    100% {
-      transform: translateY(-3px);
-      text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
-    }
-  }
 `;
 
 // Initialize particles system
@@ -390,6 +254,7 @@ interface HeroProps {
   disableParticles?: boolean;
 }
 
+// Hero Component
 const Hero: React.FC<HeroProps> = ({ disableParticles = false }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [showParticles, setShowParticles] = useState(!disableParticles);
@@ -418,7 +283,9 @@ const Hero: React.FC<HeroProps> = ({ disableParticles = false }) => {
   
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
-  }, []);    const isDarkMode = theme?.colors?.background !== '#F8FAFC';
+  }, []);
+  
+  const isDarkMode = theme?.colors?.background !== '#F8FAFC';
 
   const particleConfig = useCallback((isMobile: boolean) => ({
     fpsLimit: 30,
@@ -542,6 +409,16 @@ const Hero: React.FC<HeroProps> = ({ disableParticles = false }) => {
           <h1>
             <span>SAKTHIMURUGAN S</span>
           </h1>
+          <div className="contact-details">
+            <ContactItem>
+              <FaPhone />
+              <span>+91 97917 47058</span>
+            </ContactItem>
+            <ContactItem>
+              <FaMapMarkerAlt />
+              <span>Coimbatore, Tamil Nadu, India</span>
+            </ContactItem>
+          </div>
           <AnimatedSubtitle $isDarkMode={isDarkMode} className={isDarkMode ? 'dark-mode' : 'light-mode'}>
             <TypeAnimation
               sequence={[
@@ -563,15 +440,6 @@ const Hero: React.FC<HeroProps> = ({ disableParticles = false }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <ContactItem>
-            <FaPhone />
-            <span>+91 97917 47058</span>
-          </ContactItem>
-          <ContactItem>
-            <FaMapMarkerAlt />
-            <span>Coimbatore, Tamil Nadu, India</span>
-          </ContactItem>
-          
           <div className="email-section">
             <ContactItem>
               <MdEmail />

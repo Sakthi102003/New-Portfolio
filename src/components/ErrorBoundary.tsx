@@ -2,6 +2,7 @@ import type { ErrorInfo, ReactNode } from 'react';
 import { Component } from 'react';
 import { FaExclamationTriangle, FaRedo } from 'react-icons/fa';
 import styled from 'styled-components';
+import { isExtensionError, logApplicationError } from '../utils/errorFilter';
 import Button from './Button';
 
 // Interface for Error Boundary props
@@ -103,8 +104,17 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    // Log the error to an error reporting service
-    console.error('Error caught by ErrorBoundary:', error, errorInfo);
+    // Filter out extension-related errors
+    if (isExtensionError(error)) {
+      // Reset the error boundary for extension errors
+      this.resetErrorBoundary();
+      return;
+    }
+    
+    // Log the error using our error filter
+    logApplicationError(error, 'ErrorBoundary');
+    console.error('ErrorBoundary component stack:', errorInfo.componentStack);
+    
     this.setState({
       error: error,
       errorInfo: errorInfo
