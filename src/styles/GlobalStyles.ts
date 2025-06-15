@@ -25,6 +25,58 @@ export const GlobalStyles = createGlobalStyle`
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &.hacker-mode {
+      background: #000000;
+      color: #00ff00;
+      font-family: 'Fira Code', monospace;
+      letter-spacing: 0;
+      white-space: pre;
+      font-variant-ligatures: none;
+      font-feature-settings: "liga" 0, "calt" 0;
+      
+      * {
+        font-variant-ligatures: none;
+        font-feature-settings: "liga" 0, "calt" 0;
+      }
+
+      /* CRT scanlines effect */
+      &::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          transparent 50%,
+          rgba(0, 255, 0, 0.03) 50%
+        );
+        background-size: 100% 4px;
+        animation: scanlines 0.1s linear infinite;
+        z-index: 1000;
+      }
+
+      /* Custom scrollbar */
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #000000;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #00ff00;
+        border-radius: 4px;
+
+        &:hover {
+          background: #00ff41;
+        }
+      }
+    }
   }
 
   #root {
@@ -37,7 +89,10 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: ${() => {
+      const isHackerMode = document.body.classList.contains('hacker-mode');
+      return isHackerMode ? "'Share Tech Mono', monospace" : "'Orbitron', sans-serif";
+    }};
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 1rem;
@@ -62,34 +117,52 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   button {
-    font-family: 'Orbitron', sans-serif;
+    font-family: ${() => {
+      const isHackerMode = document.body.classList.contains('hacker-mode');
+      return isHackerMode ? "'Share Tech Mono', monospace" : "'Orbitron', sans-serif";
+    }};
     cursor: pointer;
     border: none;
     outline: none;
     background: none;
   }
 
-  img {
-    max-width: 100%;
-    height: auto;
+  /* Matrix text effect */
+  @keyframes matrix-rain {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh);
+      opacity: 0;
+    }
   }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
+  /* Scanlines animation */
+  @keyframes scanlines {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(4px);
+    }
   }
 
-  ::-webkit-scrollbar-track {
-    background: ${({ theme }) => theme.colors.background};
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.primary};
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: ${({ theme }) => theme.colors.secondary};
+  /* Terminal cursor blink */
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
   }
 
   /* Selection style */
@@ -98,14 +171,8 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.colors.background};
   }
 
-  /* Professional text highlight effect */
-  .highlight {
-    position: relative;
-    color: ${({ theme }) => theme.colors.primary};
-    transition: color 0.3s ease;
-    
-    &:hover {
-      color: ${({ theme }) => theme.colors.secondary};
-    }
+  .hacker-mode ::selection {
+    background: #00ff00;
+    color: #000000;
   }
-`; 
+`;

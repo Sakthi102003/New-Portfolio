@@ -1,21 +1,22 @@
-# My Portfolio Website
+# CyberX Portfolio
 
-A modern, responsive portfolio website showcasing my journey as a Computer Science graduate and aspiring developer. Built with React.js and TypeScript, featuring an interactive CLI interface and smooth animations.
+A cybersecurity-focused portfolio website featuring a unique terminal-based interface and modern design. Built with React.js and TypeScript, this portfolio combines a traditional UI with an interactive CLI experience, perfect for showcasing security and development expertise.
 
 🌐 **Live Demo:** [sakthi-s-portfolio.web.app](https://sakthi-s-portfolio.web.app/)
 
 ## ✨ Key Features
 
-- 🎯 Clean, minimalist design focusing on content
-- 💻 Interactive CLI interface (Press F1 to access)
-- 🚀 Responsive layout for all devices
-- ✨ Smooth animations & transitions
-- 🛠️ Detailed skills showcase with tooltips and adaptive theming
-- 📱 Mobile-first approach
-- 🌐 Social media integration
-- 🌓 Dark/Light mode toggle with minimal UI
-- ⏰ Live time display with clock icon
-- ⚡ Fast loading & optimized performance
+- 🔒 Cybersecurity-focused design and interface
+- 💻 Dual Interface: Traditional UI and Terminal Mode
+- 🎯 Interactive CLI with realistic terminal experience
+- 🚀 Responsive layout optimized for all devices
+- ✨ Smooth transitions and hacker-style animations
+- 🛠️ Comprehensive skills showcase with security focus
+- 📱 Mobile-first responsive design
+- 🌐 Integrated GitHub activity and contributions
+- 🌓 Dark mode optimized for terminal aesthetics
+- ⚡ Optimized performance and fast loading
+- 🔐 Security-themed project showcases
 
 ## 🚀 Technologies Used
 
@@ -66,20 +67,24 @@ npm run dev
 npm run build
 ```
 
-## 💻 CLI Features
+## 💻 Terminal Interface Features
 
-Access the CLI by:
-- Clicking the terminal icon in the navigation
-- Pressing the F1 key
+The terminal interface can be accessed by:
+- Clicking the terminal icon in the navigation bar
+- Using the keyboard shortcut F1
+- Switching modes in the theme toggle
 
-Available commands:
-- `help` - Show all commands
-- `about` - View my background
-- `skills` - List technical skills
-- `projects` - View my projects
-- `contact` - Get contact info
-- `clear` - Clear terminal
-- `exit` - Close CLI
+Terminal Commands:
+- `help` - Display available commands
+- `about` - View professional background
+- `skills` - List cybersecurity and technical skills
+- `projects` - Browse security projects
+- `contact` - Display contact information
+- `clear` - Clear the terminal screen
+- `exit` - Return to traditional UI
+- `github` - View GitHub activity
+- `matrix` - Toggle Matrix animation
+- `theme` - Switch between light/dark modes
 
 ## 📁 Project Structure
 
@@ -108,6 +113,34 @@ src/
 - **Time Display**: Enhanced with clock icon while maintaining time text
 - **Responsive Components**: All UI elements adapt to the current theme
 
+## 🔒 Security Features
+
+- Matrix-style background animations
+- Terminal-based interaction
+- Security project showcases
+- GitHub activity integration
+- Cybersecurity skill visualization
+- Responsive security icons
+- Interactive command system
+
+## 🎨 Design Philosophy
+
+The portfolio features two distinct interfaces:
+
+### Traditional Mode
+- Clean, professional design
+- Easy navigation
+- Project cards with live demos
+- Skills visualization
+- Contact form
+
+### Terminal Mode
+- Authentic terminal experience
+- Command-line interface
+- Matrix background effects
+- Security-focused interactions
+- Real-time command processing
+
 ## 🤝 Connect With Me
 
 - 📧 [sakthimurugan102003@gmail.com](mailto:sakthimurugan102003@gmail.com)
@@ -124,3 +157,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **2024-07-XX**: Improved theme handling in Skills section for better visibility in light mode
 - **2024-07-XX**: Simplified theme switcher to show only icon for cleaner UI
 - **2024-07-XX**: Enhanced TimeDisplay component with clock icon alongside the time text
+
+```ascii
+ ██████╗██╗   ██╗██████╗ ███████╗██████╗    ██╗  ██╗
+██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗   ╚██╗██╔╝
+██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝    ╚███╔╝ 
+██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗    ██╔██╗ 
+╚██████╗   ██║   ██████╔╝███████╗██║  ██║   ██╔╝ ██╗
+ ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝  ╚═╝
+```

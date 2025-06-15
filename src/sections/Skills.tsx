@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   FaCode,
   FaFireAlt,
@@ -12,8 +12,7 @@ import {
 import { HiCommandLine } from 'react-icons/hi2';
 import { SiCentos, SiFlask, SiKalilinux, SiTailwindcss, SiUbuntu } from 'react-icons/si';
 import { TbBrandVscode } from 'react-icons/tb';
-import styled from 'styled-components';
-import { useTheme } from '../context/ThemeContext';
+import styled, { ThemeContext } from 'styled-components';
 
 // Define a type for Skill
 interface Skill {
@@ -286,7 +285,8 @@ const skillCategories: {
 const Skills = () => {
   // Add state for tooltip
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
-  const { isDarkMode } = useTheme();
+  const theme = useContext(ThemeContext);
+  const isDarkMode = theme?.colors?.background === '#1a1a1a';
 
   return (
     <SkillsSection id="skills">
