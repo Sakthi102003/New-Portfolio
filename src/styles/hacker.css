@@ -112,3 +112,38 @@
     border-color: #00ff00;
   }
 }
+
+/* ASCII Art specific styles */
+.ascii-art {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  white-space: pre !important;
+  display: block !important;
+  overflow-x: auto !important;
+  text-align: left !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-weight: 400 !important;
+  color: #00ff00 !important;
+  text-shadow: 0 0 2px #00ff00 !important;
+}
+
+.terminal-line.ascii {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  white-space: pre !important;
+  overflow-x: visible !important;
+  word-break: keep-all !important;
+  font-feature-settings: 'liga' 0 !important;
+}
+
+/* Ensure terminal content uses monospace */
+.terminal-content {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+  font-feature-settings: 'liga' 0;
+  font-variant-ligatures: none;
+}

@@ -2,10 +2,10 @@ import { AnimatePresence } from 'framer-motion';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import ErrorBoundary from './components/ErrorBoundary';
+import HackerLayout from './components/hacker/HackerLayout';
 import LandingPage from './components/LandingPage';
 import LayoutWrapper from './components/LayoutWrapper';
 import Portfolio from './components/Portfolio';
-import TerminalPortfolio from './components/TerminalPortfolio';
 import { ModeProvider, useMode } from './context/ModeContext';
 import { GlobalStyles } from './styles/GlobalStyles';
 
@@ -33,11 +33,7 @@ const App = () => {
                     <Portfolio />
                   </LayoutWrapper>
                 } />
-                <Route path="/terminal" element={
-                  <LayoutWrapper>
-                    <TerminalPortfolio />
-                  </LayoutWrapper>
-                } />
+                <Route path="/terminal" element={<HackerLayout />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </AnimatePresence>

@@ -4,25 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { parseCommand } from '../../utils/commands';
 
+import ModeToggle from '../common/ModeToggle';
+import TerminalHeader from './TerminalHeader';
 import TerminalInput from './TerminalInput';
-
-const ASCII_TITLE = `
- ██████╗██╗   ██╗██████╗ ███████╗██████╗     ██╗  ██╗
-██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗    ╚██╗██╔╝
-██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝     ╚███╔╝ 
-██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗     ██╔██╗ 
-╚██████╗   ██║   ██████╔╝███████╗██║  ██║    ██╔╝ ██╗
- ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝    ╚═╝  ╚═╝
-`;
 
 const TerminalContainer = styled(motion.div)`
   min-height: 100vh;
   background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text.primary};
   font-family: ${({ theme }) => theme.fonts.secondary};
-  padding: 1rem;
+  padding: 0;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const CommandOutput = styled.div`
@@ -44,6 +39,13 @@ const CommandOutput = styled.div`
   }
 `;
 
+const InputContainer = styled.div`
+  position: relative;
+  z-index: 100;
+  pointer-events: auto;
+  margin-top: 1rem;
+`;
+
 interface OutputLine {
   id: number;
   content: string;
@@ -63,31 +65,23 @@ const HackerLayout: React.FC<HackerLayoutProps> = () => {
   const idCounterRef = useRef(0);
 
   useEffect(() => {
-    let mounted = true;
-    
     if (!initialized) {
-      const bootSequence = async () => {
-        if (!mounted) return;
-        
-        addOutput('System initializing...', 'system');
-        await new Promise(resolve => setTimeout(resolve, 600));
-        
-        if (!mounted) return;
-        addOutput('Loading cybersecurity portfolio...', 'system');
-        await new Promise(resolve => setTimeout(resolve, 800));
-        
-        if (!mounted) return;
-        addOutput(ASCII_TITLE, 'system');
-        addOutput('\nType "help" for available commands.\n', 'system');
-        setInitialized(true);
-      };
-
-      bootSequence();
+      // Initialize immediately without boot sequence
+      setInitialized(true);
     }
+  }, [initialized]);
 
-    return () => {
-      mounted = false;
-    };
+  // Auto-focus the terminal input
+  useEffect(() => {
+    if (initialized) {
+      // Small delay to ensure component is fully rendered
+      setTimeout(() => {
+        const input = document.querySelector('input[type="text"]') as HTMLInputElement;
+        if (input) {
+          input.focus();
+        }
+      }, 100);
+    }
   }, [initialized]);
 
   const addOutput = (content: string, type: OutputLine['type'] = 'output') => {
@@ -107,6 +101,16 @@ const HackerLayout: React.FC<HackerLayoutProps> = () => {
 
     if (command.toLowerCase() === 'clear') {
       setOutputLines([]);
+      return;
+    }
+
+    if (command.trim().toLowerCase() === 'exit') {
+      addOutput('Exiting terminal mode...', 'system');
+      setTimeout(() => {
+        localStorage.removeItem('uiMode'); // Clear the mode completely
+        localStorage.setItem('lastPage', '/'); // Remember we want to go to landing
+        window.location.href = '/'; // Direct navigation to landing page
+      }, 500);
       return;
     }
 
@@ -131,24 +135,28 @@ const HackerLayout: React.FC<HackerLayoutProps> = () => {
 
   return (
     <>
+      <ModeToggle />
       <TerminalContainer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        <div style={{ height: '100vh', overflow: 'auto', padding: '1rem' }}>
+        <TerminalHeader />
+        <div style={{ flex: 1, overflow: 'auto', padding: '1rem', minHeight: 0 }}>
           {outputLines.map(line => (
             <CommandOutput key={line.id} className={line.type}>
               {line.content}
             </CommandOutput>
           ))}
           {initialized && (
-            <TerminalInput
-              onCommand={handleCommand}
-              onKeyDown={handleKeyDown}
-              commandHistory={commandHistory}
-              historyIndex={historyIndex}
-            />
+            <InputContainer>
+              <TerminalInput
+                onCommand={handleCommand}
+                onKeyDown={handleKeyDown}
+                commandHistory={commandHistory}
+                historyIndex={historyIndex}
+              />
+            </InputContainer>
           )}
         </div>
       </TerminalContainer>

@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import TerminalHeader from './hacker/TerminalHeader';
 
 interface CLIProps {
   isOpen: boolean;
@@ -11,7 +12,7 @@ const CLIContainer = styled(motion.div)`
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  width: 600px;
+  width: 800px;
   max-width: calc(100vw - 2rem);
   background: ${({ theme }) => theme.colors.background};
   border: 1px solid ${({ theme }) => theme.colors.primary}40;
@@ -27,6 +28,10 @@ const CLIContainer = styled(motion.div)`
     right: 1rem;
     width: calc(100vw - 2rem);
   }
+`;
+
+const CLIContent = styled.div`
+  background: ${({ theme }) => theme.colors.background}CC;
 `;
 
 const CLIHeader = styled.div`
@@ -81,7 +86,7 @@ const CLITitle = styled.div`
   }
 `;
 
-const CLIContent = styled.div`
+const CLIContentInner = styled.div`
   padding: 1rem;
   height: 300px;
   overflow-y: auto;
@@ -138,7 +143,7 @@ const OutputLine = styled.div<{ $isCommand?: boolean }>`
 export const CLI: React.FC<CLIProps> = ({ isOpen, onClose }) => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<Array<{ type: 'command' | 'output', content: string }>>([
-    { type: 'output', content: 'Welcome to SakthiCLI v1.0\nType "help" to see available commands.' },
+    { type: 'output', content: 'Type "help" to see available commands.' },
   ]);
 
   const commands: Record<string, () => string> = {
@@ -189,61 +194,55 @@ export const CLI: React.FC<CLIProps> = ({ isOpen, onClose }) => {
     if (normalizedCmd in commands) {
       const output = commands[normalizedCmd]();
       if (output) {
-        newHistory.push({ type: 'output' as const, content: output });
+        newHistory.push({ type: 'output', content: output });
       }
     } else {
-      newHistory.push({ type: 'output' as const, content: `Command not found: ${cmd}. Type "help" for available commands.` });
+      newHistory.push({ type: 'output', content: `Command not found: ${cmd}` });
     }
     
     setHistory(newHistory);
+    setInput('');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (input.trim()) {
-      handleCommand(input);
-      setInput('');
-    }
-  };
-
-  return (
+  return isOpen ? (
     <AnimatePresence>
-      {isOpen && (
-        <CLIContainer
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.2 }}
-        >
-          <CLIHeader>
-            <CLIControls>
-              <CLIClose onClick={onClose} title="Close" />
-              <CLIMinimize title="Minimize" />
-              <CLIMaximize title="Maximize" />
-            </CLIControls>
-            <CLITitle>~/cybersecurity-portfolio</CLITitle>
-          </CLIHeader>
-          <CLIContent>
-            {history.map((entry, i) => (
-              <OutputLine key={i} $isCommand={entry.type === 'command'}>
-                {entry.content}
+      <CLIContainer
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+      >
+        <TerminalHeader />
+        <CLIHeader>
+          <CLIControls>
+            <CLIClose onClick={onClose} />
+            <CLIMinimize />
+            <CLIMaximize />
+          </CLIControls>
+          <CLITitle>Terminal</CLITitle>
+        </CLIHeader>
+        <CLIContent>
+          <CLIContentInner>
+            {history.map((line, index) => (
+              <OutputLine key={index} $isCommand={line.type === 'command'}>
+                {line.content}
               </OutputLine>
             ))}
-          </CLIContent>
-          <form onSubmit={handleSubmit}>
             <CLIInput>
               <Prompt>$</Prompt>
               <Input
-                type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && input.trim()) {
+                    handleCommand(input);
+                  }
+                }}
                 autoFocus
-                placeholder="Type a command..."
               />
             </CLIInput>
-          </form>
-        </CLIContainer>
-      )}
+          </CLIContentInner>
+        </CLIContent>
+      </CLIContainer>
     </AnimatePresence>
-  );
+  ) : null;
 };

@@ -4,11 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { useMode } from '../../context/ModeContext';
 
 const ModeToggle: React.FC = () => {
-  const { isHackerMode } = useMode();
+  const { isHackerMode, setUIMode } = useMode();
   const navigate = useNavigate();
 
   const handleExit = () => {
-    navigate('/');
+    if (isHackerMode) {
+      setUIMode('normal');
+      navigate('/portfolio');
+    } else {
+      navigate('/');  // Return to landing page in normal mode
+    }
   };
 
   return (

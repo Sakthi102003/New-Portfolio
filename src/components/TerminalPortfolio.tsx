@@ -3,12 +3,12 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ModeContext } from '../context/ModeContext';
-import { ASCII_BANNER } from '../utils/ascii';
+import { WELCOME_ASCII } from '../utils/ascii';
 
 interface TerminalLine {
   id: number;
   content: string;
-  type: 'system' | 'input' | 'output' | 'error' | 'success' | 'loading';
+  type: 'system' | 'input' | 'output' | 'error' | 'success' | 'loading' | 'ascii';
   timestamp?: Date;
 }
 
@@ -38,7 +38,7 @@ const Scanlines = styled.div`
 const TerminalContainer = styled.div`
   min-height: 100vh;
   background: #000000;
-  color: #00ff00;
+  color: #ff0000;
   font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
   font-size: 16px;
   line-height: 1;
@@ -64,12 +64,21 @@ const TerminalContent = styled.div`
   overflow-y: auto;
   position: relative;
   z-index: 1;
-  font-family: 'Fira Code', monospace;
+  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Liberation Mono', 'Courier New', monospace;
   letter-spacing: 0;
   white-space: pre;
   tab-size: 4;
   font-variant-ligatures: none;
   font-feature-settings: "liga" 0, "calt" 0;
+  -webkit-font-feature-settings: "liga" 0, "calt" 0;
+  text-rendering: geometricPrecision;
+  font-size: 16px;
+  line-height: 1.2;
+  
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 15px;
+  }
 `;
 
 const TerminalLine = styled(motion.div)<{ $type: string }>`
@@ -77,14 +86,22 @@ const TerminalLine = styled(motion.div)<{ $type: string }>`
   padding: 0;
   white-space: pre !important;
   display: block;
-  font-family: 'Fira Code', monospace;
-  line-height: 1;
-  letter-spacing: 0;
+  font-family: ${props => props.$type === 'ascii' 
+    ? "'Courier New', 'Lucida Console', 'Monaco', monospace" 
+    : "'Fira Code', 'Consolas', 'Monaco', 'Liberation Mono', monospace"};
+  line-height: ${props => props.$type === 'ascii' ? '1.0' : '1.2'};
+  letter-spacing: ${props => props.$type === 'ascii' ? '0' : '0'};
   tab-size: 4;
   font-variant-ligatures: none;
   font-feature-settings: "liga" 0, "calt" 0;
   -webkit-font-feature-settings: "liga" 0, "calt" 0;
-  text-rendering: geometricPrecision;
+  text-rendering: ${props => props.$type === 'ascii' ? 'optimizeSpeed' : 'geometricPrecision'};
+  word-spacing: normal;
+  word-break: keep-all;
+  overflow-x: visible;
+  font-size: ${props => props.$type === 'ascii' ? '14px' : '16px'};
+  font-weight: ${props => props.$type === 'ascii' ? 'normal' : 'normal'};
+  min-height: ${props => props.$type === 'ascii' ? '14px' : 'auto'};
   color: ${props => {
     switch (props.$type) {
       case 'error':
@@ -93,6 +110,8 @@ const TerminalLine = styled(motion.div)<{ $type: string }>`
         return '#00ff00';
       case 'system':
         return '#00ff00';
+      case 'ascii':
+        return '#00ff41';
       case 'loading':
         return '#ffff00';
       default:
@@ -163,10 +182,10 @@ const Subtitle = styled.p`
 `;
 
 const TERMINAL_VERSION = `
-   ⚡ Security Research & Development Terminal v2.0 ⚡`;
+   ⚡ Terminal Portfolio v2.0 ⚡`;
 
 const WELCOME_MESSAGE = `
-Welcome to the CyberX Security Research & Development Terminal.
+Welcome to Sakthimurugan's Portfolio Terminal.
 
 Type "help" to see available commands.
 `;
@@ -225,22 +244,46 @@ const TerminalPortfolio: React.FC = () => {
     setLines(prev => [...prev, { id: generateUniqueId(), content, type, timestamp: new Date() }]);
   };
 
-  const typewriterEffect = async (text: string, type: TerminalLine['type'], speedMultiplier: number = 1) => {
-    if (text.includes('█') || text.includes('╔') || text.includes('═')) {
-      addLine(text, type);
+  const typewriterEffect = async (text: string, type: TerminalLine['type'], _speedMultiplier: number = 1) => {
+    // Force ASCII type for certain content
+    if (text.includes('█') || text.includes('╔') || text.includes('═') || 
+        text.includes('╗') || text.includes('╚') || text.includes('╝') || text.includes('║')) {
+      type = 'ascii';
+    }
+
+    // Special handling for ASCII art
+    if (type === 'ascii') {
+      console.log('Processing ASCII art:', text.substring(0, 50) + '...');
+      
+      // Add the ASCII art line by line to ensure proper alignment
+      const lines = text.split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        console.log(`Adding ASCII line ${i}: "${line}"`);
+        // Always add the line, even if it's empty (for proper spacing)
+        addLine(line, 'ascii');
+        await new Promise(r => setTimeout(r, 100));
+      }
       return;
     }
 
-    let currentText = '';
-    for (const char of text) {
-      currentText += char;
-      addLine(currentText, type);
-      await new Promise(r => setTimeout(r, 30 / speedMultiplier));
+    // Regular typewriter effect for non-ASCII content
+    const lines = text.split('\n');
+    for (const line of lines) {
+      if (line.trim() === '') {
+        addLine('', type);
+        continue;
+      }
+      
+      // For non-ASCII, add the complete line at once for better performance
+      addLine(line, type);
+      await new Promise(r => setTimeout(r, 50));
     }
   };
 
   const bootSequence = async () => {
     setShowInput(false);
+    setLines([]); // Clear any existing lines
     await new Promise(r => setTimeout(r, 1000));
     await typewriterEffect('Initializing system...', 'system');
     await new Promise(r => setTimeout(r, 500));
@@ -249,11 +292,7 @@ const TerminalPortfolio: React.FC = () => {
     await typewriterEffect('Starting terminal...', 'system');
     await new Promise(r => setTimeout(r, 1000));
     
-    // Add the ASCII art without typewriter effect
-    addLine(ASCII_BANNER, 'system');
-    await new Promise(r => setTimeout(r, 500));
-    
-    // Add the version line with typewriter effect
+    // Add the version line
     await typewriterEffect(TERMINAL_VERSION, 'system', 1);
     await new Promise(r => setTimeout(r, 500));
     
@@ -281,7 +320,31 @@ const TerminalPortfolio: React.FC = () => {
       return;
     }
 
-    // Add your command handling logic here
+    if (cmd === 'ascii' || cmd === 'logo') {
+      await typewriterEffect('Displaying ASCII art...', 'system');
+      await new Promise(r => setTimeout(r, 500));
+      await typewriterEffect(WELCOME_ASCII, 'ascii', 1);
+      return;
+    }
+
+    if (cmd === 'help') {
+      await typewriterEffect('Available commands:', 'system');
+      await typewriterEffect('  help     - Show this help message', 'output');
+      await typewriterEffect('  ascii    - Display ASCII logo', 'output');
+      await typewriterEffect('  logo     - Display ASCII logo', 'output');
+      await typewriterEffect('  clear    - Clear the terminal', 'output');
+      await typewriterEffect('  exit     - Exit terminal mode', 'output');
+      return;
+    }
+
+    if (cmd === 'clear') {
+      setLines([]);
+      return;
+    }
+
+    // Unknown command
+    await typewriterEffect(`Command not found: ${command}`, 'error');
+    await typewriterEffect('Type "help" for available commands.', 'system');
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -319,7 +382,7 @@ const TerminalPortfolio: React.FC = () => {
   return (
     <TerminalContainer className="terminal-container">
       <Header>
-        <Title>CyberX Terminal</Title>
+        <Title>Portfolio Terminal</Title>
         <Subtitle>Security Research & Development</Subtitle>
       </Header>
       <TerminalContent ref={terminalRef}>
