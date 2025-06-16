@@ -12,7 +12,14 @@ type ModeContextType = {
   setUIMode: (mode: 'normal' | 'hacker') => void;
 };
 
-export const ModeContext = createContext<ModeContextType | undefined>(undefined);
+// Using const for consistency with HMR
+const ModeContext = createContext<ModeContextType | undefined>(undefined);
+export { ModeContext };
+
+const getInitialHackerMode = (): boolean => {
+  const savedMode = localStorage.getItem('uiMode');
+  return savedMode === 'hacker';
+};
 
 const getInitialDarkMode = (): boolean => {
   const savedTheme = localStorage.getItem('theme');
@@ -25,7 +32,7 @@ const getInitialDarkMode = (): boolean => {
 export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isHackerMode, setIsHackerMode] = useState(false); // Always start in normal mode
+  const [isHackerMode, setIsHackerMode] = useState(getInitialHackerMode());
   const [isDarkMode, setIsDarkMode] = useState(getInitialDarkMode());
 
   const theme = useMemo(() => {
@@ -36,14 +43,20 @@ export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [isHackerMode, isDarkMode]);
 
   const setUIMode = (mode: 'normal' | 'hacker') => {
-    if (mode === 'hacker' && !isHackerMode) {
-      // Only allow switching TO hacker mode if we're not already in it
+    if (mode === 'hacker') {
       setIsHackerMode(true);
+      localStorage.setItem('uiMode', 'hacker');
       navigate('/terminal');
-    } else if (mode === 'normal' && !isHackerMode) {
-      // Only allow switching to normal if we're not in hacker mode
+    } else if (mode === 'normal') {
       setIsHackerMode(false);
-      navigate('/portfolio');
+      const lastPage = localStorage.getItem('lastPage');
+      if (lastPage === '/') {
+        navigate('/');
+        localStorage.removeItem('lastPage');
+      } else {
+        navigate('/portfolio');
+      }
+      localStorage.removeItem('uiMode');
     }
   };
 
@@ -56,18 +69,38 @@ export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [isHackerMode, isDarkMode]);
 
-  // Clear hacker mode on mount and prevent URL-based switching
+  // Handle navigation based on mode persistence
   useEffect(() => {
-    localStorage.removeItem('uiMode');
+    const lastPage = localStorage.getItem('lastPage');
+
     if (isHackerMode && location.pathname !== '/terminal') {
       navigate('/terminal');
+    } else if (!isHackerMode && location.pathname === '/terminal') {
+      if (lastPage === '/') {
+        navigate('/');
+        localStorage.removeItem('lastPage');
+      } else {
+        navigate('/portfolio');
+      }
     }
   }, [isHackerMode, location.pathname, navigate]);
 
   const toggleMode = () => {
     const newMode = !isHackerMode;
     setIsHackerMode(newMode);
-    navigate(newMode ? '/terminal' : '/portfolio');
+    if (newMode) {
+      localStorage.setItem('uiMode', 'hacker');
+      navigate('/terminal');
+    } else {
+      const lastPage = localStorage.getItem('lastPage');
+      if (lastPage === '/') {
+        navigate('/');
+        localStorage.removeItem('lastPage');
+      } else {
+        navigate('/portfolio');
+      }
+      localStorage.removeItem('uiMode');
+    }
   };
 
   const toggleTheme = () => {

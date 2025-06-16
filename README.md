@@ -22,13 +22,21 @@ A cybersecurity-focused portfolio website featuring a unique terminal-based inte
 
 ### Frontend
 - React.js with TypeScript
-- Styled Components for styling
+- Tailwind CSS for utility-first styling
+- Three.js and React Three Fiber for 3D graphics
+- Styled Components for component styling
 - Framer Motion for animations
 - React Icons for UI elements
+- React Type Animation for typing effects
+- TSParticles for particle effects
+- EmailJS for contact form functionality
 
 ### Development Tools
 - Vite for fast development
 - ESLint for code quality
+- PostCSS for CSS processing
+- Tailwind Typography plugin
+- TypeScript for type safety
 - Git for version control
 - VS Code as IDE
 
@@ -90,20 +98,21 @@ Terminal Commands:
 
 ```
 src/
-├── components/     # Reusable UI components
-│   ├── CLI/       # Interactive terminal
-│   ├── ThemeSwitcher.tsx  # Dark/Light mode toggle
-│   ├── TimeDisplay.tsx    # Clock with live time
-│   └── ...        # Other components
-├── sections/      # Main page sections
-│   ├── Skills.tsx # Skills section with theme adaptation
-│   └── ...        # Other sections
-├── context/       # React context providers
-│   ├── ThemeContext.tsx  # Theme management
-│   └── ...        # Other contexts
-├── styles/        # Theme & styling
-├── hooks/         # Custom React hooks
-└── types/         # TypeScript types
+├── components/        # Reusable UI components
+│   ├── hacker/       # Terminal-based UI components
+│   │   ├── HackerLayout.tsx
+│   │   ├── TerminalHeader.tsx
+│   │   └── TerminalInput.tsx
+│   ├── normal/       # Traditional UI components
+│   │   └── NormalLayout.tsx
+│   └── common/       # Shared components
+├── context/          # React Context providers
+├── data/            # Static data and content
+├── hooks/           # Custom React hooks
+├── sections/        # Main page sections
+├── styles/          # Styling and theme files
+├── types/           # TypeScript type definitions
+└── utils/           # Utility functions
 ```
 
 ## 🎨 UI Improvements

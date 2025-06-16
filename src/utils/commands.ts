@@ -15,8 +15,8 @@ const AVAILABLE_COMMANDS = {
   github: 'Visit my GitHub profile',
   linkedin: 'Visit my LinkedIn profile',
   social: 'Display all social links',
-  banner: 'Display the welcome banner',
-  theme: 'Toggle dark/light theme'
+  theme: 'Toggle dark/light theme',
+  exit: 'Exit terminal mode'
 };
 
 export const parseCommand = (input: string, navigate: NavigateFunction): CommandResult => {
@@ -46,12 +46,6 @@ and continuously improving my skills to stay ahead in the tech landscape.
 Location: Coimbatore, Tamil Nadu, India
 Contact: +91 97917 47058
 Email: sakthimurugan102003@gmail.com
-• Vulnerability Assessment
-
-💻 Tech Stack
-• Languages: Python, JavaScript/TypeScript, Go
-• Security Tools: Burp Suite, Metasploit, Nmap
-• Development: React, Node.js, Docker
 `.trim()
       };
 
@@ -141,21 +135,6 @@ Use 'github' or 'linkedin' commands to open profiles directly.`
 [+] Email: sakthimurugan102003@gmail.com`
       };
 
-    case 'banner':
-      return {
-        type: 'info',
-        message: `
-┌─────────────────────────────────────────┐
-│                                         │
-│        SAKTHIMURUGAN'S PORTFOLIO        │
-│     Cybersecurity & Development Hub     │
-│                                         │
-└─────────────────────────────────────────┘
-
-Type 'help' to see available commands
-`
-      };
-
     case 'github':
       window.open('https://github.com/Sakthi102003', '_blank');
       return {
@@ -187,6 +166,13 @@ Type 'help' to see available commands
       return {
         type: 'success',
         message: 'Switching to normal mode...'
+      };
+
+    case 'exit':
+      navigate('/portfolio');
+      return {
+        type: 'success',
+        message: 'Exiting terminal mode...'
       };
 
     default:

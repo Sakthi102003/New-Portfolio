@@ -62,14 +62,29 @@ export const lightTheme: DefaultTheme = {
 export const darkTheme: DefaultTheme = {
   ...lightTheme,
   colors: {
-    ...lightTheme.colors,
-    background: '#1a1a1a',
-    surface: '#2d2d2d',
+    background: '#0a0f16',
+    surface: '#1a1f26',
+    primary: '#00ff9d',
+    secondary: '#ff3e3e',
     text: {
-      primary: '#ffffff',
-      secondary: '#b3b3b3',
-      accent: '#808080',
-      highlight: '#6c757d',
+      primary: '#e0e0e0',
+      secondary: '#00ff9d',
+      accent: '#4a9eff',
+      highlight: '#ff3e3e',
     },
+    cyber: {
+      success: '#00ff9d',
+      warning: '#ffb800',
+      danger: '#ff3e3e',
+      info: '#4a9eff',
+    },
+    success: '#00ff9d',
+    error: '#ff3e3e',
+    warning: '#ffb800',
+  },
+  shadows: {
+    glow: '0 0 10px rgba(0, 255, 157, 0.3)',
+    glowStrong: '0 0 20px rgba(0, 255, 157, 0.5)',
+    card: '0 4px 6px rgba(0, 0, 0, 0.3)',
   },
 };
