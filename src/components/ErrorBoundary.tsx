@@ -23,10 +23,10 @@ const ErrorContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: ${({ theme }) => theme.spacing.xl};
-  margin: ${({ theme }) => theme.spacing.lg} 0;
-  background-color: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.error}40;
+  padding: ${({ theme }) => (theme?.spacing?.xl ?? '2rem')};
+  margin: ${({ theme }) => (theme?.spacing?.lg ?? '1.5rem')} 0;
+  background-color: ${({ theme }) => (theme?.colors?.surface ?? '#1a1a1a')};
+  border: 1px solid ${({ theme }) => (theme?.colors?.error ? `${theme.colors.error}40` : '#ff000040')};
   border-radius: 8px;
   text-align: center;
   max-width: 800px;
@@ -35,18 +35,18 @@ const ErrorContainer = styled.div`
 
 const ErrorIcon = styled.div`
   font-size: 3rem;
-  color: ${({ theme }) => theme.colors.error};
-  margin-bottom: ${({ theme }) => theme.spacing.md};
+  color: ${({ theme }) => theme?.colors?.error || '#ff0000'};
+  margin-bottom: ${({ theme }) => theme?.spacing?.md || '1rem'};
 `;
 
 const ErrorTitle = styled.h2`
-  color: ${({ theme }) => theme.colors.error};
-  margin-bottom: ${({ theme }) => theme.spacing.md};
+  color: ${({ theme }) => theme?.colors?.error || '#ff0000'};
+  margin-bottom: ${({ theme }) => theme?.spacing?.md || '1rem'};
 `;
 
 const ErrorMessage = styled.p`
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-  color: ${({ theme }) => theme.colors.text.primary};
+  margin-bottom: ${({ theme }) => theme?.spacing?.lg || '1.5rem'};
+  color: ${({ theme }) => theme?.colors?.text?.primary || '#ffffff'};
 `;
 
 const ErrorDetail = styled.details`

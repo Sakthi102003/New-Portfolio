@@ -1,9 +1,88 @@
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DiCss3, DiHtml5, DiJavascript, DiPython, DiReact } from 'react-icons/di';
 import { FaEnvelope, FaExternalLinkAlt, FaGithub, FaLinkedin, FaMapMarkerAlt } from 'react-icons/fa';
 import { SiChartdotjs, SiFirebase, SiFlask, SiKalilinux, SiLinux, SiTailwindcss, SiUbuntu, SiVisualstudiocode } from 'react-icons/si';
+
 import styled from 'styled-components';
+import Resume from '../sections/Resume';
+import SecuritySection from '../sections/SecuritySection';
+
+const TypedRole: React.FC = () => {
+  const [firstText, setFirstText] = useState('');
+  const [secondText, setSecondText] = useState('');
+  const [showCursor, setShowCursor] = useState(true);
+  const firstPhrase = 'Cybersecurity Enthusiast';
+  const secondPhrase = 'Developer';
+  const typingSpeed = 100; // milliseconds per character
+  const pauseBetweenPhrases = 1000; // 1 second pause
+
+  useEffect(() => {
+    let currentIndex = 0;
+    let isTypingFirst = true;
+    let pauseTimeout: NodeJS.Timeout;
+
+    const typeText = () => {
+      if (isTypingFirst) {
+        if (currentIndex <= firstPhrase.length) {
+          setFirstText(firstPhrase.slice(0, currentIndex));
+          currentIndex++;
+        } else {
+          isTypingFirst = false;
+          currentIndex = 0;
+          // Pause before starting the second phrase
+          pauseTimeout = setTimeout(() => {
+            setShowCursor(false);
+            typeText();
+          }, pauseBetweenPhrases);
+          return;
+        }
+      } else {
+        if (currentIndex <= secondPhrase.length) {
+          setSecondText(secondPhrase.slice(0, currentIndex));
+          currentIndex++;
+        } else {
+          return;
+        }
+      }
+      setTimeout(typeText, typingSpeed);
+    };
+
+    typeText();
+    return () => {
+      clearTimeout(pauseTimeout);
+    };
+  }, []);
+
+  return (
+    <Role style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        {firstText}
+        {showCursor && (
+          <motion.span
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ repeat: Infinity, duration: 0.8 }}
+            style={{ borderRight: '2px solid', marginLeft: '2px' }}
+          >
+            |
+          </motion.span>
+        )}
+      </div>
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        {secondText}
+        {!showCursor && (
+          <motion.span
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ repeat: Infinity, duration: 0.8 }}
+            style={{ borderRight: '2px solid', marginLeft: '2px' }}
+          >
+            |
+          </motion.span>
+        )}
+      </div>
+    </Role>
+  );
+};
 
 const Container = styled.div`
   width: 100%;
@@ -78,20 +157,6 @@ const ContactLink = styled(motion.a)`
 
   svg {
     font-size: 1.1em;
-  }
-`;
-
-const Objective = styled(motion.p)`
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.8;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.text.secondary};
-  font-size: 1.1rem;
-  
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    line-height: 1.6;
   }
 `;
 
@@ -298,6 +363,32 @@ const SectionTitle = styled(motion.h2)`
   }
 `;
 
+const Role = styled.div`
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  color: ${({ theme }) => theme.colors.text.primary};
+  font-family: ${({ theme }) => theme.fonts.secondary};
+  opacity: 0.9;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
+`;
+
+const Description = styled(motion.p)`
+  max-width: 800px;
+  margin: 1rem auto;
+  line-height: 1.8;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.text.secondary};
+  font-size: 1.1rem;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    padding: 0 ${({ theme }) => theme.spacing.md};
+  }
+`;
+
 const Portfolio: React.FC = () => {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -319,6 +410,16 @@ const Portfolio: React.FC = () => {
         >
           SAKTHIMURUGAN S
         </Title>
+        <TypedRole />
+        <Description
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          A passionate cybersecurity enthusiast and developer with hands-on experience in building real-world projects using
+          Python, Machine Learning, and modern web technologies. I enjoy solving security challenges, developing useful tools,
+          and continuously improving my skills to stay ahead in the tech landscape.
+        </Description>
         <ContactInfo>
           <motion.div 
             className="basic-info"
@@ -350,16 +451,11 @@ const Portfolio: React.FC = () => {
             </ContactLink>
           </motion.div>
         </ContactInfo>
-        <Objective
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          A passionate cybersecurity enthusiast and developer with hands-on experience in building real-world projects using
-          Python, Machine Learning, and modern web technologies. I enjoy solving security challenges, developing useful tools,
-          and continuously improving my skills to stay ahead in the tech landscape.
-        </Objective>
+
+
       </Header>
+
+      <Resume />
 
       <Section
         initial="hidden"
@@ -557,6 +653,14 @@ const Portfolio: React.FC = () => {
             </ProjectLinks>
           </ProjectCard>
         </ProjectsGrid>
+      </Section>
+
+      <Section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <SecuritySection />
       </Section>
     </Container>
   );

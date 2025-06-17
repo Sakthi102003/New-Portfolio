@@ -14,8 +14,8 @@ A cybersecurity-focused portfolio website featuring a unique terminal-based inte
 - 🛠️ Comprehensive skills showcase with security focus
 - 📱 Mobile-first responsive design
 - 🌐 Integrated GitHub activity and contributions
-- 🌓 Dark mode optimized for terminal aesthetics
-- ⚡ Optimized performance and fast loading
+- ⚡ System initialization loading screen with progress tracking
+- 🎬 Sleek loading animations and transitions
 - 🔐 Security-themed project showcases
 
 ## 🚀 Technologies Used
@@ -29,7 +29,6 @@ A cybersecurity-focused portfolio website featuring a unique terminal-based inte
 - React Icons for UI elements
 - React Type Animation for typing effects
 - TSParticles for particle effects
-- EmailJS for contact form functionality
 
 ### Development Tools
 - Vite for fast development
@@ -88,11 +87,11 @@ Terminal Commands:
 - `skills` - List cybersecurity and technical skills
 - `projects` - Browse security projects
 - `contact` - Display contact information
+- `resume` - Download my resume
 - `clear` - Clear the terminal screen
 - `exit` - Return to traditional UI
-- `github` - View GitHub activity
-- `matrix` - Toggle Matrix animation
-- `theme` - Switch between light/dark modes
+- `github` - Visit my GitHub profile
+- `Linkedin` - Visit my LinkedIn profile
 
 ## 📁 Project Structure
 
@@ -117,10 +116,9 @@ src/
 
 ## 🎨 UI Improvements
 
-- **Minimal Theme Switcher**: Simplified to show only sun/moon icon instead of text
-- **Skills Display**: Improved contrast in both dark and light modes
+- **Loading System**: Sleek initialization screen with progress tracking
 - **Time Display**: Enhanced with clock icon while maintaining time text
-- **Responsive Components**: All UI elements adapt to the current theme
+- **Responsive Components**: All UI elements adapt to fit any screen size
 
 ## 🔒 Security Features
 
@@ -149,6 +147,8 @@ The portfolio features two distinct interfaces:
 - Matrix background effects
 - Security-focused interactions
 - Real-time command processing
+- System initialization sequence
+- Progress tracking animations
 
 ## 🤝 Connect With Me
 
@@ -163,9 +163,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔄 Recent Updates
 
-- **2024-07-XX**: Improved theme handling in Skills section for better visibility in light mode
-- **2024-07-XX**: Simplified theme switcher to show only icon for cleaner UI
+- **2024-07-XX**: Added system initialization loading screen with progress tracking
 - **2024-07-XX**: Enhanced TimeDisplay component with clock icon alongside the time text
+- **2024-07-XX**: Improved responsive design for better mobile experience
 
 ```ascii
  ██████╗██╗   ██╗██████╗ ███████╗██████╗    ██╗  ██╗

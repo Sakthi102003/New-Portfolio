@@ -15,7 +15,7 @@ const AVAILABLE_COMMANDS = {
   github: 'Visit my GitHub profile',
   linkedin: 'Visit my LinkedIn profile',
   social: 'Display all social links',
-  theme: 'Toggle dark/light theme',
+  resume: 'Download my resume',
   exit: 'Exit terminal mode'
 };
 
@@ -155,12 +155,6 @@ Use 'github' or 'linkedin' commands to open profiles directly.`
         message: ''
       };
 
-    case 'theme':
-      return {
-        type: 'info',
-        message: 'Theme toggled...'
-      };
-
     case 'mode':
       navigate('/portfolio');
       return {
@@ -169,10 +163,29 @@ Use 'github' or 'linkedin' commands to open profiles directly.`
       };
 
     case 'exit':
-      navigate('/portfolio');
+      // Set flags to control navigation behavior
+      localStorage.setItem('exitDestination', '/');
+      localStorage.removeItem('uiMode');
+      
+      // Update UI mode state first, then let the context effect handle navigation
+      document.body.classList.remove('hacker-mode');
+      
       return {
         type: 'success',
         message: 'Exiting terminal mode...'
+      };
+
+    case 'resume':
+      // Trigger resume download
+      const link = document.createElement('a');
+      link.href = '/Resume.pdf';
+      link.download = 'Sakthimurugan_Resume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      return {
+        type: 'success',
+        message: 'Downloading resume...'
       };
 
     default:

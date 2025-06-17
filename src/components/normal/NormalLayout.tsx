@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import styled from 'styled-components';
+import ThemeToggle from '../ThemeToggle';
+import { TimeDisplay } from '../TimeDisplay';
 
 interface NormalLayoutProps {
   children: React.ReactNode;
@@ -26,7 +28,9 @@ const NormalLayout: React.FC<NormalLayoutProps> = ({ children }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
+      <TimeDisplay />
       <ContentContainer>{children}</ContentContainer>
+      <ThemeToggle />
     </PageContainer>
   );
 };
