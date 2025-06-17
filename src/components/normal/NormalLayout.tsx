@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import styled from 'styled-components';
+import AvailabilityStatus from '../AvailabilityStatus';
 import ThemeToggle from '../ThemeToggle';
-import { TimeDisplay } from '../TimeDisplay';
 
 interface NormalLayoutProps {
   children: React.ReactNode;
@@ -21,6 +21,16 @@ const ContentContainer = styled.main`
   padding: ${({ theme }) => theme.spacing.xl};
 `;
 
+const StatusContainer = styled.div`
+  position: fixed;
+  top: 20px;
+  right: calc((100% - 1200px) / 2 + ${({ theme }) => theme.spacing.xl});
+  z-index: ${({ theme }) => theme.zIndex.navbar};
+  @media (max-width: 1200px) {
+    right: ${({ theme }) => theme.spacing.xl};
+  }
+`;
+
 const NormalLayout: React.FC<NormalLayoutProps> = ({ children }) => {
   return (
     <PageContainer
@@ -28,7 +38,9 @@ const NormalLayout: React.FC<NormalLayoutProps> = ({ children }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <TimeDisplay />
+      <StatusContainer>
+        <AvailabilityStatus />
+      </StatusContainer>
       <ContentContainer>{children}</ContentContainer>
       <ThemeToggle />
     </PageContainer>

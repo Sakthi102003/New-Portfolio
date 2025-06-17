@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import GitHubCalendar from 'react-github-calendar';
 import {
-  FaCode,
-  FaGithub,
-  FaProjectDiagram,
-  FaStar
+    FaCode,
+    FaGithub,
+    FaProjectDiagram,
+    FaStar
 } from 'react-icons/fa';
 import { VscRepoForked } from 'react-icons/vsc';
+import type { DefaultTheme } from 'styled-components';
 import styled, { useTheme } from 'styled-components';
-import type { Theme } from '../types/theme';
 
 interface GithubStats {
   publicRepos: number;
@@ -20,7 +20,7 @@ interface GithubStats {
 }
 
 interface StyledProps {
-  theme: Theme;
+  theme: DefaultTheme;
 }
 
 const ContributionsContainer = styled.div<StyledProps>`
