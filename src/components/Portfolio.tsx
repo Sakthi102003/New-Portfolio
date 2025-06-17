@@ -1,85 +1,36 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { DiCss3, DiHtml5, DiJavascript, DiPython, DiReact } from 'react-icons/di';
 import { FaEnvelope, FaExternalLinkAlt, FaGithub, FaLinkedin, FaMapMarkerAlt } from 'react-icons/fa';
 import { SiChartdotjs, SiFirebase, SiFlask, SiKalilinux, SiLinux, SiTailwindcss, SiUbuntu, SiVisualstudiocode } from 'react-icons/si';
+import { TypeAnimation } from 'react-type-animation';
 
 import styled from 'styled-components';
 import Resume from '../sections/Resume';
 import SecuritySection from '../sections/SecuritySection';
 
+const StyledTypeAnimation = styled(TypeAnimation)`
+  display: inline-block;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text.primary};
+`;
+
 const TypedRole: React.FC = () => {
-  const [firstText, setFirstText] = useState('');
-  const [secondText, setSecondText] = useState('');
-  const [showCursor, setShowCursor] = useState(true);
-  const firstPhrase = 'Cybersecurity Enthusiast';
-  const secondPhrase = 'Developer';
-  const typingSpeed = 100; // milliseconds per character
-  const pauseBetweenPhrases = 1000; // 1 second pause
-
-  useEffect(() => {
-    let currentIndex = 0;
-    let isTypingFirst = true;
-    let pauseTimeout: NodeJS.Timeout;
-
-    const typeText = () => {
-      if (isTypingFirst) {
-        if (currentIndex <= firstPhrase.length) {
-          setFirstText(firstPhrase.slice(0, currentIndex));
-          currentIndex++;
-        } else {
-          isTypingFirst = false;
-          currentIndex = 0;
-          // Pause before starting the second phrase
-          pauseTimeout = setTimeout(() => {
-            setShowCursor(false);
-            typeText();
-          }, pauseBetweenPhrases);
-          return;
-        }
-      } else {
-        if (currentIndex <= secondPhrase.length) {
-          setSecondText(secondPhrase.slice(0, currentIndex));
-          currentIndex++;
-        } else {
-          return;
-        }
-      }
-      setTimeout(typeText, typingSpeed);
-    };
-
-    typeText();
-    return () => {
-      clearTimeout(pauseTimeout);
-    };
-  }, []);
-
   return (
-    <Role style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-      <div style={{ position: 'relative', display: 'inline-block' }}>
-        {firstText}
-        {showCursor && (
-          <motion.span
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ repeat: Infinity, duration: 0.8 }}
-            style={{ borderRight: '2px solid', marginLeft: '2px' }}
-          >
-            |
-          </motion.span>
-        )}
-      </div>
-      <div style={{ position: 'relative', display: 'inline-block' }}>
-        {secondText}
-        {!showCursor && (
-          <motion.span
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ repeat: Infinity, duration: 0.8 }}
-            style={{ borderRight: '2px solid', marginLeft: '2px' }}
-          >
-            |
-          </motion.span>
-        )}
-      </div>
+    <Role>
+      <StyledTypeAnimation
+        sequence={[
+          'Cybersecurity Enthusiast',
+          2000,
+          'Developer',
+          2000,
+        ]}
+        wrapper="span"
+        speed={50}
+        repeat={Infinity}
+        cursor={true}
+      />
     </Role>
   );
 };
@@ -364,14 +315,21 @@ const SectionTitle = styled(motion.h2)`
 `;
 
 const Role = styled.div`
-  font-size: 1.5rem;
+  text-align: center;
   margin: 1rem 0;
   color: ${({ theme }) => theme.colors.text.primary};
   font-family: ${({ theme }) => theme.fonts.secondary};
   opacity: 0.9;
+  
+  .type-animation {
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
 
   @media (max-width: 768px) {
-    font-size: 1.2rem;
+    .type-animation {
+      font-size: 1.2rem;
+    }
   }
 `;
 
