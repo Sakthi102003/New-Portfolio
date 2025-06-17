@@ -82,7 +82,7 @@ const Controls = styled.div`
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme } = useTheme();
+  useTheme(); // Keep the theme context for styled-components
 
   return (
     <Nav>
