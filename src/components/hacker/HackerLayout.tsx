@@ -104,13 +104,19 @@ const HackerLayout: React.FC<HackerLayoutProps> = () => {
       return;
     }
 
-    if (command.trim().toLowerCase() === 'exit') {
+    if (command.toLowerCase() === 'exit') {
+      // First display the exit message
       addOutput('Exiting terminal mode...', 'system');
+      
+      // Set navigation flags
+      localStorage.setItem('exitDestination', '/');
+      localStorage.removeItem('uiMode');
+      
+      // Force direct navigation after a short delay
       setTimeout(() => {
-        localStorage.removeItem('uiMode'); // Clear the mode completely
-        localStorage.setItem('lastPage', '/'); // Remember we want to go to landing
-        window.location.href = '/'; // Direct navigation to landing page
+        window.location.href = '/';
       }, 500);
+      
       return;
     }
 

@@ -162,13 +162,13 @@ const About = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <p>
-              👋 Hello! I'm a fresh Computer Science graduate specializing in Cloud Technology and Information Security.
+              👋 Hello! I'm a Computer Science graduate from Rathinam College of Arts and Science, specializing in Cloud Technology and Information Security.
             </p>
             <p>
-              💻 Passionate about coding and cybersecurity, I combine Python backend development with modern frontend frameworks to build secure, responsive applications.
+              💻 I focus on building secure, scalable applications using modern technologies. My expertise includes both offensive security testing and secure application development.
             </p>
             <p>
-              🎯 Looking to grow and contribute in a dynamic development team while expanding my skills in secure software development.
+              🎯 I'm passionate about creating robust solutions that prioritize both functionality and security, always staying current with the latest security practices and development trends.
             </p>
             <HireButton
               href="#contact"

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { DefaultTheme } from 'styled-components';
-import { darkTheme, lightTheme } from '../styles/theme';
+import { createTheme, darkTheme, lightTheme } from '../styles/theme';
 
 type ModeContextType = {
   isHackerMode: boolean;
@@ -10,6 +10,7 @@ type ModeContextType = {
   toggleTheme: () => void;
   theme: DefaultTheme;
   setUIMode: (mode: 'normal' | 'hacker') => void;
+  updateCustomTheme: (themeColors: any) => void;
 };
 
 // Using const for consistency with HMR
@@ -35,12 +36,20 @@ export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isHackerMode, setIsHackerMode] = useState(getInitialHackerMode());
   const [isDarkMode, setIsDarkMode] = useState(getInitialDarkMode());
 
+  const [customTheme, setCustomTheme] = useState(() => {
+    const saved = localStorage.getItem('customTheme');
+    return saved ? JSON.parse(saved) : null;
+  });
+
   const theme = useMemo(() => {
     if (isHackerMode) {
       return darkTheme;
     }
+    if (!isHackerMode && customTheme) {
+      return createTheme(customTheme);
+    }
     return isDarkMode ? darkTheme : lightTheme;
-  }, [isHackerMode, isDarkMode]);
+  }, [isHackerMode, isDarkMode, customTheme]);
 
   const setUIMode = (mode: 'normal' | 'hacker') => {
     if (mode === 'hacker') {
@@ -71,17 +80,25 @@ export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Handle navigation based on mode persistence
   useEffect(() => {
-    const lastPage = localStorage.getItem('lastPage');
+    // Check if we just exited hacker mode and have a specific destination
+    const exitDestination = localStorage.getItem('exitDestination');
+    if (exitDestination) {
+      // Clear the destination flag
+      localStorage.removeItem('exitDestination');
+      
+      // Update the mode state
+      setIsHackerMode(false);
+      
+      // Navigate to destination
+      navigate(exitDestination);
+      return;
+    }
 
+    // Normal mode handling
     if (isHackerMode && location.pathname !== '/terminal') {
       navigate('/terminal');
-    } else if (!isHackerMode && location.pathname === '/terminal') {
-      if (lastPage === '/') {
-        navigate('/');
-        localStorage.removeItem('lastPage');
-      } else {
-        navigate('/portfolio');
-      }
+    } else if (!isHackerMode && location.pathname === '/terminal' && !localStorage.getItem('lastPage')) {
+      navigate('/portfolio');
     }
   }, [isHackerMode, location.pathname, navigate]);
 
@@ -113,8 +130,21 @@ export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateCustomTheme = (themeColors: any) => {
+    setCustomTheme(themeColors);
+    localStorage.setItem('customTheme', JSON.stringify(themeColors));
+  };
+
   return (
-    <ModeContext.Provider value={{ isHackerMode, isDarkMode, toggleMode, toggleTheme, theme, setUIMode }}>
+    <ModeContext.Provider value={{ 
+      isHackerMode, 
+      isDarkMode, 
+      toggleMode, 
+      toggleTheme, 
+      theme, 
+      setUIMode,
+      updateCustomTheme
+    }}>
       {children}
     </ModeContext.Provider>
   );

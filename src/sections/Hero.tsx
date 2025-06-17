@@ -43,6 +43,37 @@ const StyledContactItem = styled.div<ContactItemProps>(({ theme }) => ({
   }
 }));
 
+const AnimatedSubtitle = styled.div<{ $isDarkMode?: boolean }>`
+  font-size: 2rem;
+  margin: 1rem 0;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme, $isDarkMode }) => 
+    $isDarkMode ? theme.colors.primary : theme.colors.text.primary};
+  
+  span {
+    font-family: ${({ theme }) => theme.fonts.secondary};
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    
+    &::after {
+      content: '|';
+      animation: blink 1s step-end infinite;
+    }
+  }
+
+  @keyframes blink {
+    from, to { opacity: 1 }
+    50% { opacity: 0 }
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+`;
+
 const HeroSection = styled.section<StyledComponentProps>(({ theme }) => ({
   minHeight: '100vh',
   display: 'flex',
@@ -238,16 +269,6 @@ const SecondaryButton = styled(Button)`
   }
 `;
 
-const AnimatedSubtitle = styled.h2<StyledComponentProps>`
-  font-size: 2rem;
-  font-weight: 400;
-  margin: 0;
-  color: ${({ theme }) => theme?.colors?.text?.primary};
-  font-family: ${({ theme }) => theme?.fonts?.secondary};
-  letter-spacing: 3px;
-  opacity: 0.95;
-`;
-
 // Initialize particles system
 
 interface HeroProps {
@@ -419,18 +440,28 @@ const Hero: React.FC<HeroProps> = ({ disableParticles = false }) => {
               <span>Coimbatore, Tamil Nadu, India</span>
             </ContactItem>
           </div>
-          <AnimatedSubtitle $isDarkMode={isDarkMode} className={isDarkMode ? 'dark-mode' : 'light-mode'}>
+          <AnimatedSubtitle $isDarkMode={isDarkMode}>
             <TypeAnimation
               sequence={[
                 'Cybersecurity Enthusiast',
-                1000,
-                'Developer',
-                1000
+                2000,
+                'Security Researcher',
+                2000,
+                'Full Stack Developer',
+                2000,
+                'Python Developer',
+                2000,
+                'Penetration Tester',
+                2000
               ]}
               wrapper="span"
-              speed={50}
+              speed={40}
               repeat={Infinity}
-              style={{ display: 'inline-block' }}
+              cursor={true}
+              style={{ 
+                display: 'inline-block',
+                background: 'transparent'
+              }}
             />
           </AnimatedSubtitle>
         </TextContent>

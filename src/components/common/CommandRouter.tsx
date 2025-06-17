@@ -1,4 +1,4 @@
-import React from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface Command {
@@ -7,8 +7,19 @@ interface Command {
   action: () => void;
 }
 
-export const CommandRouter: React.FC = () => {
+export const useCommandRouter = () => {
   const navigate = useNavigate();
+
+  const showHelp = useCallback((commands: Command[]) => {
+    console.log('Available commands:');
+    commands.forEach(cmd => {
+      console.log(`${cmd.command}\t- ${cmd.description}`);
+    });
+  }, []);
+
+  const clearTerminal = useCallback(() => {
+    // Implementation will be added later
+  }, []);
 
   const commands: Command[] = [
     {
@@ -34,36 +45,28 @@ export const CommandRouter: React.FC = () => {
     {
       command: 'help',
       description: 'Show available commands',
-      action: () => showHelp()
+      action: () => showHelp(commands)
     },
     {
       command: 'clear',
       description: 'Clear the terminal',
-      action: () => clearTerminal()
+      action: clearTerminal
     }
   ];
 
-  const showHelp = () => {
-    console.log('Available commands:');
-    commands.forEach(cmd => {
-      console.log(`${cmd.command}\t- ${cmd.description}`);
-    });
-  };
-
-  const clearTerminal = () => {
-    // Implementation will be added later
-  };
-
-  const executeCommand = (input: string) => {
+  const executeCommand = useCallback((input: string) => {
     const cmd = commands.find(c => c.command === input.toLowerCase().trim());
     if (cmd) {
       cmd.action();
     } else {
       console.log(`Command not found: ${input}`);
     }
+  }, [commands]);
+
+  return {
+    commands,
+    executeCommand,
+    showHelp,
+    clearTerminal
   };
-
-  return null; // This is just a logic component
 };
-
-export default CommandRouter;
