@@ -178,7 +178,7 @@ Use 'github' or 'linkedin' commands to open profiles directly.`
     case 'resume':
       // Trigger resume download
       const link = document.createElement('a');
-      link.href = '/Resume.pdf';
+      link.href = process.env.NODE_ENV === 'production' ? '/Resume.pdf' : '/public/Resume.pdf';
       link.download = 'Sakthimurugan_Resume.pdf';
       document.body.appendChild(link);
       link.click();
