@@ -44,7 +44,7 @@ const Resume = () => {
     <ResumeSection id="resume">
       <Container>
         <DownloadButton
-          href="/Resume.pdf"
+          href={process.env.NODE_ENV === 'production' ? '/Resume.pdf' : '/public/Resume.pdf'}
           download="Sakthimurugan_Resume.pdf"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}

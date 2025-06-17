@@ -514,7 +514,8 @@ const Hero: React.FC<HeroProps> = ({ disableParticles = false }) => {
             <FaEnvelope /> Get in Touch
           </Button>
           <SecondaryButton
-            href="https://drive.google.com/file/d/1Ea-Jh7ImCFsIQoBDQ3wSYrN5g4W2B4cv/view?usp=sharing"
+            href={process.env.NODE_ENV === 'production' ? '/Resume.pdf' : '/public/Resume.pdf'}
+            download="Sakthimurugan_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             initial={{ opacity: 0, y: 20 }}
